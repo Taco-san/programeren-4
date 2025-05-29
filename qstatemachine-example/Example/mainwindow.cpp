@@ -188,6 +188,12 @@ void MainWindow::sinit_entered(void)
     logstring += "Initialisation succesfull";
     ui->plainTextEdit->appendPlainText(logstring);
 
+    credit.setCredit(0);
+    ui->credit->appendPlainText(QString::number(credit.getCredit()));
+    credit.setPrice(0);
+    ui->price->appendPlainText(QString::number(credit.getPrice()));
+    credit.setChange(0);
+    ui->change->appendPlainText(QString::number(credit.getChange()));
     ui->userInfo->appendPlainText("Coffee Machine initialised.");
     ui->pb1->setText("Choose coffee option");
     ui->pb2->setText("administration");
@@ -201,6 +207,7 @@ void MainWindow::S_waitForOption_onEntry(void)
     logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     logstring += "entered S_waitForOption";
     ui->plainTextEdit->appendPlainText(logstring);
+    credit.setPrice(0); // Reset price for new selection
 
     ui->pb1->setText("Coffee 150 cents");
     ui->pb2->setText("Cappuchino 175 cents");
@@ -211,30 +218,33 @@ void MainWindow::S_waitForOption_onEntry(void)
 void MainWindow::S_OptionCappuchino_onEntry(void)
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-//    coinhandler->price = 175;
+    credit.setPrice(175);
     ui->userInfo->appendPlainText("Cappuchino selected. Price is 175 cents.");
     ui->pb1->setText("Confirm selection");
     ui->pb2->setText("Cancel selection");
     ui->pb3->setText("");
+    ui->price->appendPlainText(QString::number(credit.getPrice()));
 }
 
 void MainWindow::S_OptionEspresso_onEntry(void)
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-//    coinhandler->price = 225;
     ui->userInfo->appendPlainText("Espresso selected. Price is 225 cents.");
+    credit.setPrice(225);
     ui->pb1->setText("Confirm selection");
     ui->pb2->setText("Cancel selection");
     ui->pb3->setText("");
+    ui->price->appendPlainText(QString::number(credit.getPrice()));
 }
 
 void MainWindow::S_OptionCoffee_onEntry(void)
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-//    coinhandler->price = 150;
+    credit.setPrice(150);
     ui->userInfo->appendPlainText("Coffee selected. Price is 150 cents.");
     ui->pb1->setText("Confirm selection");
     ui->pb2->setText("Cancel selection");
     ui->pb3->setText("");
+    ui->price->appendPlainText(QString::number(credit.getPrice()));
 }
 

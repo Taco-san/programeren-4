@@ -12,10 +12,12 @@ QT += statemachine
 
 
 SOURCES += \
+    coinhandler.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    coinhandler.h \
     mainwindow.h
 
 FORMS += \

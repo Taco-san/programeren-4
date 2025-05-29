@@ -19,7 +19,6 @@
 #include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -28,7 +27,6 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QVBoxLayout *verticalLayout;
     QGroupBox *groupBox;
     QHBoxLayout *horizontalLayout;
     QPushButton *pb1;
@@ -41,6 +39,9 @@ public:
     QLabel *label;
     QPlainTextEdit *plainTextEdit;
     QPushButton *pbExit;
+    QPlainTextEdit *price;
+    QPlainTextEdit *credit;
+    QPlainTextEdit *change;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -48,13 +49,12 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(942, 525);
+        MainWindow->resize(1128, 506);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
-        verticalLayout = new QVBoxLayout(centralwidget);
-        verticalLayout->setObjectName("verticalLayout");
         groupBox = new QGroupBox(centralwidget);
         groupBox->setObjectName("groupBox");
+        groupBox->setGeometry(QRect(9, 9, 1111, 81));
         horizontalLayout = new QHBoxLayout(groupBox);
         horizontalLayout->setObjectName("horizontalLayout");
         pb1 = new QPushButton(groupBox);
@@ -82,38 +82,35 @@ public:
 
         horizontalLayout->addWidget(pushButton_2);
 
-
-        verticalLayout->addWidget(groupBox);
-
         label_2 = new QLabel(centralwidget);
         label_2->setObjectName("label_2");
-
-        verticalLayout->addWidget(label_2);
-
+        label_2->setGeometry(QRect(20, 90, 47, 16));
         userInfo = new QPlainTextEdit(centralwidget);
         userInfo->setObjectName("userInfo");
-
-        verticalLayout->addWidget(userInfo);
-
+        userInfo->setEnabled(false);
+        userInfo->setGeometry(QRect(10, 120, 591, 141));
         label = new QLabel(centralwidget);
         label->setObjectName("label");
-
-        verticalLayout->addWidget(label);
-
+        label->setGeometry(QRect(9, 256, 63, 16));
         plainTextEdit = new QPlainTextEdit(centralwidget);
         plainTextEdit->setObjectName("plainTextEdit");
-
-        verticalLayout->addWidget(plainTextEdit);
-
+        plainTextEdit->setGeometry(QRect(9, 278, 591, 146));
         pbExit = new QPushButton(centralwidget);
         pbExit->setObjectName("pbExit");
-
-        verticalLayout->addWidget(pbExit);
-
+        pbExit->setGeometry(QRect(9, 430, 80, 24));
+        price = new QPlainTextEdit(centralwidget);
+        price->setObjectName("price");
+        price->setGeometry(QRect(880, 160, 241, 61));
+        credit = new QPlainTextEdit(centralwidget);
+        credit->setObjectName("credit");
+        credit->setGeometry(QRect(880, 240, 241, 61));
+        change = new QPlainTextEdit(centralwidget);
+        change->setObjectName("change");
+        change->setGeometry(QRect(880, 310, 241, 61));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 942, 21));
+        menubar->setGeometry(QRect(0, 0, 1128, 21));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
