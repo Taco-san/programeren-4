@@ -22,6 +22,13 @@ signals:
     void dispenseCoffee();
     void dispenseCappuchino();
     void dispenseEspresso();
+    void dispense5c();
+    void dispense10c();
+    void dispense20c();
+    void dispense50c();
+    void dispense100c();
+    void NoChange();
+    void changeOver();
 };
 
 
@@ -53,6 +60,13 @@ private slots:
     void S_dispensedCappuchino(void);
     void S_dispensedEspresso(void);
     void S_dispensedCoffee(void);
+    void s_dispensingChange(void);
+    void S_dispensing100c(void);
+    void S_dispensing50c(void);
+    void S_dispensing20c(void);
+    void S_dispensing10c(void);
+    void S_dispensing5c(void);
+    void S_waitForChangePickup(void);
 
 private:
     Ui::MainWindow *ui;

@@ -7,6 +7,11 @@ coinhandler::coinhandler()
     change_ = 0;
     price_ = 0;
     coffeetype_ = 0;
+    coin5c_ = 0;
+    coin10c_ = 0;
+    coin20c_ = 0;
+    coin50c_ = 0;
+    coin100c_ = 0;
 }
 
 int coinhandler::getCredit()
@@ -36,6 +41,11 @@ void coinhandler::setPrice(int amount)
 
 int coinhandler::getChange()
 {
+
+    change_ = credit_ - price_;
+    if (change_ < 0) {
+        change_ = 0; // Ensure change is not negative
+    }
     return change_;
 }
 
@@ -70,4 +80,50 @@ void coinhandler::setType(int amount)
 int coinhandler::getType()
 {
     return coffeetype_;
+}
+
+void coinhandler::addCoin5c(int amount)
+{
+    coin5c_ += amount;
+}
+
+void coinhandler::addCoin10c(int amount)
+{
+    coin10c_ += amount;
+}
+
+void coinhandler::addCoin20c(int amount)
+{
+    coin20c_ += amount;
+}
+
+void coinhandler::addCoin50c(int amount)
+{
+    coin50c_ += amount;
+}
+
+void coinhandler::addCoin100c(int amount)
+{
+    coin100c_ += amount;
+}
+
+int coinhandler::getCoin5cCount()
+{
+    return coin5c_;
+}
+int coinhandler::getCoin10cCount()
+{
+    return coin10c_;
+}
+int coinhandler::getCoin20cCount()
+{
+    return coin20c_;
+}
+int coinhandler::getCoin50cCount()
+{
+    return coin50c_;
+}
+int coinhandler::getCoin100cCount()
+{
+    return coin100c_;
 }

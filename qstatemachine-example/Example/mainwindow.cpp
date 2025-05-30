@@ -102,6 +102,23 @@ MainWindow::MainWindow(QWidget *parent)
     s_dispensingCappuchino->addTransition(ui->pb1, &QPushButton::clicked, s_dispensingChangeState);
     s_dispensingEspresso->addTransition(ui->pb1, &QPushButton::clicked, s_dispensingChangeState);
     s_dispensingCoffee->addTransition(ui->pb1, &QPushButton::clicked, s_dispensingChangeState);
+    s_dispensingChangeState->addTransition(internalEvent, SIGNAL(dispense100c()), s_dispense100C);
+    s_dispensingChangeState->addTransition(internalEvent, SIGNAL(dispense50c()), s_dispense50C);
+    s_dispensingChangeState->addTransition(internalEvent, SIGNAL(dispense20c()), s_dispense20C);
+    s_dispensingChangeState->addTransition(internalEvent, SIGNAL(dispense10c()), s_dispense10C);
+    s_dispensingChangeState->addTransition(internalEvent, SIGNAL(dispense5c()), s_dispense5C);
+    s_dispensingChangeState->addTransition(internalEvent, SIGNAL(NoChange()), s_waitForChangePickup);
+    s_dispense100C->addTransition(internalEvent, SIGNAL(changeOver()), s_dispensingChangeState);
+    s_dispense50C->addTransition(internalEvent, SIGNAL(changeOver()), s_dispensingChangeState);
+    s_dispense20C->addTransition(internalEvent, SIGNAL(changeOver()), s_dispensingChangeState);
+    s_dispense10C->addTransition(internalEvent, SIGNAL(changeOver()), s_dispensingChangeState);
+    s_dispense5C->addTransition(internalEvent, SIGNAL(changeOver()), s_dispensingChangeState);
+    s_dispense100C->addTransition(internalEvent, SIGNAL(NoChange()), s_waitForChangePickup);
+    s_dispense50C->addTransition(internalEvent, SIGNAL(NoChange()), s_waitForChangePickup);
+    s_dispense20C->addTransition(internalEvent, SIGNAL(NoChange()), s_waitForChangePickup);
+    s_dispense10C->addTransition(internalEvent, SIGNAL(NoChange()), s_waitForChangePickup);
+    s_dispense5C->addTransition(internalEvent, SIGNAL(NoChange()), s_waitForChangePickup);
+    s_waitForChangePickup->addTransition(ui->pb1, &QPushButton::clicked, s_waitForOption);
 
 
     // Add all other states
@@ -170,12 +187,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(s_dispensingEspresso, &QState::entered, this, &MainWindow::S_dispensedEspresso);
     connect(s_dispensingCoffee, &QState::entered, this, &MainWindow::S_dispensedCoffee);
 
-    connect(s_dispensingChangeState, &QState::entered, this, [](){ qDebug() << "Entered s_dispensingChangeState"; });
-    connect(s_dispense100C, &QState::entered, this, [](){ qDebug() << "Entered s_dispense100C"; });
-    connect(s_dispense50C, &QState::entered, this, [](){ qDebug() << "Entered s_dispense50C"; });
-    connect(s_dispense20C, &QState::entered, this, [](){ qDebug() << "Entered s_dispense20C"; });
-    connect(s_dispense10C, &QState::entered, this, [](){ qDebug() << "Entered s_dispense10C"; });
-    connect(s_dispense5C, &QState::entered, this, [](){ qDebug() << "Entered s_dispense5C"; });
+    connect(s_dispensingChangeState, &QState::entered, this, &MainWindow::s_dispensingChange);
+    connect(s_dispense100C, &QState::entered, this, &MainWindow::S_dispensing100c);
+    connect(s_dispense50C, &QState::entered, this, &MainWindow::S_dispensing50c);
+    connect(s_dispense20C, &QState::entered, this, &MainWindow::S_dispensing20c);
+    connect(s_dispense10C, &QState::entered, this, &MainWindow::S_dispensing10c);
+    connect(s_dispense5C, &QState::entered, this, &MainWindow::S_dispensing5c);
+    connect(s_waitForChangePickup, &QState::entered, this, &MainWindow::S_waitForChangePickup);
 
     connect(s_refill100C, &QState::entered, this, [](){ qDebug() << "Entered s_refill100C"; });
     connect(s_refill50C, &QState::entered, this, [](){ qDebug() << "Entered s_refill50C"; });
@@ -187,7 +205,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(s_refillCappuchino, &QState::entered, this, [](){ qDebug() << "Entered s_refillCappuchino"; });
     connect(s_waitForRefill, &QState::entered, this, [](){ qDebug() << "Entered s_waitForRefill"; });
 
-    connect(s_waitForChangePickup, &QState::entered, this, [](){ qDebug() << "Entered s_waitForChangePickup"; });
+    
 
     statemachine.start();
 
@@ -230,6 +248,11 @@ void MainWindow::S_waitForOption_onEntry(void)
     logstring += "entered S_waitForOption";
     ui->plainTextEdit->appendPlainText(logstring);
     credit.setPrice(0); // Reset price for new selection
+    credit.setType(0); // Reset coffee type
+    credit.setChange(0); // Reset change
+    ui->price->setPlainText(QString::number(credit.getPrice()));
+    ui->credit->setPlainText(QString::number(credit.getCredit()));
+    ui->change->setPlainText(QString::number(credit.getChange()));
 
     ui->pb1->setText("Coffee 150 cents");
     ui->pb2->setText("Cappuchino 175 cents");
@@ -246,7 +269,7 @@ void MainWindow::S_OptionCappuchino_onEntry(void)
     ui->pb1->setText("Confirm selection");
     ui->pb2->setText("Cancel selection");
     ui->pb3->setText("");
-    ui->price->appendPlainText(QString::number(credit.getPrice()));
+    ui->price->setPlainText(QString::number(credit.getPrice()));
 }
 
 void MainWindow::S_OptionEspresso_onEntry(void)
@@ -258,7 +281,7 @@ void MainWindow::S_OptionEspresso_onEntry(void)
     ui->pb1->setText("Confirm selection");
     ui->pb2->setText("Cancel selection");
     ui->pb3->setText("");
-    ui->price->appendPlainText(QString::number(credit.getPrice()));
+    ui->price->setPlainText(QString::number(credit.getPrice()));
 }
 
 void MainWindow::S_OptionCoffee_onEntry(void)
@@ -270,7 +293,7 @@ void MainWindow::S_OptionCoffee_onEntry(void)
     ui->pb1->setText("Confirm selection");
     ui->pb2->setText("Cancel selection");
     ui->pb3->setText("");
-    ui->price->appendPlainText(QString::number(credit.getPrice()));
+    ui->price->setPlainText(QString::number(credit.getPrice()));
 }
 
 void MainWindow::S_waitingForCoins()
@@ -290,6 +313,7 @@ void MainWindow::S_5C_inserted()
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     logstring += "5 cents inserted";
+    credit.addCoin5c(1);
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(5);
 }
@@ -298,6 +322,7 @@ void MainWindow::S_10C_inserted()
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     logstring += "10 cents inserted";
+    credit.addCoin10c(1);
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(10);
 }
@@ -306,6 +331,7 @@ void MainWindow::S_20C_inserted()
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     logstring += "20 cents inserted";
+    credit.addCoin20c(1);
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(20);
 }
@@ -314,6 +340,7 @@ void MainWindow::S_50C_inserted()
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     logstring += "50 cents inserted";
+    credit.addCoin50c(1);
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(50);
 }
@@ -322,6 +349,7 @@ void MainWindow::S_100C_inserted()
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     logstring += "100 cents inserted";
+    credit.addCoin100c(1);
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(100);
 }
@@ -332,12 +360,12 @@ void MainWindow::ProcessMoney(int money)
     ui->plainTextEdit->appendPlainText(logstring);
 
     credit.setCredit(credit.getCredit() + money);
-    ui->credit->appendPlainText(QString::number(credit.getCredit()));
+    // Update the credit text by replacing its content instead of appending
+    ui->credit->setPlainText(QString::number(credit.getCredit()));
+    ui->change->setPlainText(QString::number(credit.getChange()));
 
     if (credit.getCredit() >= credit.getPrice()) {
-        // Enough credit to dispense coffee
         ui->userInfo->appendPlainText("Enough credit to dispense coffee.");
-        // Transition to dispensing state
         statemachine.postEvent(new QEvent(QEvent::User));
         emit internalEvent->customEnough();
     } else {
@@ -396,4 +424,154 @@ void MainWindow::S_dispensedCoffee(void)
     ui->pb3->setText("");
     ui->pb4->setText("");
     ui->pb5->setText("");
+}
+
+void MainWindow::s_dispensingChange(void)
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Dispensing change state";
+    ui->plainTextEdit->setPlainText(logstring);
+
+    int change = credit.getChange();
+    int change100 = credit.getCoin100cCount();
+    int change50 = credit.getCoin50cCount();
+    int change20 = credit.getCoin20cCount();
+    int change10 = credit.getCoin10cCount();
+    int change5 = credit.getCoin5cCount();
+
+
+    if (change >= 100 && change100 > 0){
+        emit internalEvent->dispense5c();
+    }
+    else if (change >= 50 && change50 > 0){
+        emit internalEvent->dispense50c();
+    }
+    else if (change >= 20 && change20 > 0){
+        emit internalEvent->dispense20c();
+    }
+    else if (change >= 10 && change10 > 0){
+        emit internalEvent->dispense10c();
+    }
+    else if (change >= 5 && change5 > 0){
+        emit internalEvent->dispense5c();
+    }
+    else {
+        ui->userInfo->appendPlainText("No change to dispense please call administration.");
+        emit internalEvent->NoChange();
+        ui->change->setPlainText(QString::number(credit.getChange()));
+    }
+}
+
+void MainWindow::S_dispensing100c(void)
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Dispensing 100 cents";
+    ui->plainTextEdit->appendPlainText(logstring);
+    credit.setChange(credit.getChange() - 100);
+    credit.addCoin100c(-1);
+    ui->change->setPlainText(QString::number(credit.getChange()));
+    ui->userInfo->appendPlainText("Please take your change of 100 cents.");
+    if (credit.getChange() > 0) {
+        ui->userInfo->appendPlainText("More change to dispense.");
+        emit internalEvent->changeOver();
+    } else {
+        ui->userInfo->appendPlainText("No more change to dispense.");
+        emit internalEvent->NoChange();
+        credit.setCredit(0);
+    }   
+}
+
+void MainWindow::S_dispensing50c(void)
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Dispensing 50 cents";
+    ui->plainTextEdit->appendPlainText(logstring);
+    credit.setChange(credit.getChange() - 50);
+    credit.addCoin50c(-1);
+    ui->change->setPlainText(QString::number(credit.getChange()));
+    ui->userInfo->appendPlainText("Please take your change of 50 cents.");
+    if (credit.getChange() > 0) {
+        ui->userInfo->appendPlainText("More change to dispense.");
+        emit internalEvent->changeOver();
+    } else {
+        ui->userInfo->appendPlainText("No more change to dispense.");
+        emit internalEvent->NoChange();
+        credit.setCredit(0);
+    }
+}
+
+void MainWindow::S_dispensing20c(void)
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Dispensing 20 cents";
+    ui->plainTextEdit->appendPlainText(logstring);
+    credit.setChange(credit.getChange() - 20);
+    credit.addCoin20c(-1);
+    ui->change->setPlainText(QString::number(credit.getChange()));
+    ui->userInfo->appendPlainText("Please take your change of 20 cents.");
+    if (credit.getChange() > 0) {
+        ui->userInfo->appendPlainText("More change to dispense.");
+        emit internalEvent->changeOver();
+    } else {
+        ui->userInfo->appendPlainText("No more change to dispense.");
+        emit internalEvent->NoChange();
+        credit.setCredit(0);
+    }
+}
+
+void MainWindow::S_dispensing10c(void)
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Dispensing 10 cents";
+    ui->plainTextEdit->appendPlainText(logstring);
+    credit.setChange(credit.getChange() - 10);
+    credit.addCoin10c(-1);
+    ui->change->setPlainText(QString::number(credit.getChange()));
+    ui->userInfo->appendPlainText("Please take your change of 10 cents.");
+    if (credit.getChange() > 0) {
+        ui->userInfo->appendPlainText("More change to dispense.");
+        emit internalEvent->changeOver();
+    } else {
+        ui->userInfo->appendPlainText("No more change to dispense.");
+        emit internalEvent->NoChange();
+        credit.setCredit(0);
+    }
+}
+
+void MainWindow::S_dispensing5c(void)
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Dispensing 5 cents";
+    ui->plainTextEdit->appendPlainText(logstring);
+    credit.setChange(credit.getChange() - 5);
+    credit.addCoin5c(-1);
+    ui->change->setPlainText(QString::number(credit.getChange()));
+    ui->userInfo->appendPlainText("Please take your change of 5 cents.");
+    if (credit.getChange() > 0) {
+        ui->userInfo->appendPlainText("More change to dispense.");
+        emit internalEvent->changeOver();
+    } else {
+        ui->userInfo->appendPlainText("No more change to dispense.");
+        emit internalEvent->NoChange();
+        credit.setCredit(0);
+    }
+}
+
+void MainWindow::S_waitForChangePickup(void)
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Waiting for change pickup";
+    ui->plainTextEdit->appendPlainText(logstring);
+    ui->userInfo->appendPlainText("Please take your change.");
+    ui->pb1->setText("Take change");
+    ui->pb2->setText("");
+    ui->pb3->setText("");
+    ui->pb4->setText("");
+    ui->pb5->setText("");
+
+    // Reset values here
+    credit.setPrice(0);
+    credit.setChange(0);
+    ui->price->setPlainText(QString::number(credit.getPrice()));
+    ui->change->setPlainText(QString::number(credit.getChange()));
 }

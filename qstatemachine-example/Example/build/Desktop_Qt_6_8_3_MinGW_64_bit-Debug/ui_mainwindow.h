@@ -42,6 +42,9 @@ public:
     QPlainTextEdit *price;
     QPlainTextEdit *credit;
     QPlainTextEdit *change;
+    QLabel *label_3;
+    QLabel *label_4;
+    QLabel *label_5;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -84,14 +87,14 @@ public:
 
         label_2 = new QLabel(centralwidget);
         label_2->setObjectName("label_2");
-        label_2->setGeometry(QRect(20, 90, 47, 16));
+        label_2->setGeometry(QRect(10, 100, 47, 16));
         userInfo = new QPlainTextEdit(centralwidget);
         userInfo->setObjectName("userInfo");
         userInfo->setEnabled(false);
         userInfo->setGeometry(QRect(10, 120, 591, 141));
         label = new QLabel(centralwidget);
         label->setObjectName("label");
-        label->setGeometry(QRect(9, 256, 63, 16));
+        label->setGeometry(QRect(10, 260, 63, 16));
         plainTextEdit = new QPlainTextEdit(centralwidget);
         plainTextEdit->setObjectName("plainTextEdit");
         plainTextEdit->setGeometry(QRect(9, 278, 591, 146));
@@ -100,13 +103,22 @@ public:
         pbExit->setGeometry(QRect(9, 430, 80, 24));
         price = new QPlainTextEdit(centralwidget);
         price->setObjectName("price");
-        price->setGeometry(QRect(880, 160, 241, 61));
+        price->setGeometry(QRect(880, 200, 241, 61));
         credit = new QPlainTextEdit(centralwidget);
         credit->setObjectName("credit");
-        credit->setGeometry(QRect(880, 240, 241, 61));
+        credit->setGeometry(QRect(880, 280, 241, 61));
         change = new QPlainTextEdit(centralwidget);
         change->setObjectName("change");
-        change->setGeometry(QRect(880, 310, 241, 61));
+        change->setGeometry(QRect(880, 370, 241, 61));
+        label_3 = new QLabel(centralwidget);
+        label_3->setObjectName("label_3");
+        label_3->setGeometry(QRect(880, 180, 101, 16));
+        label_4 = new QLabel(centralwidget);
+        label_4->setObjectName("label_4");
+        label_4->setGeometry(QRect(880, 260, 151, 21));
+        label_5 = new QLabel(centralwidget);
+        label_5->setObjectName("label_5");
+        label_5->setGeometry(QRect(880, 350, 151, 21));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -134,6 +146,9 @@ public:
         label_2->setText(QCoreApplication::translate("MainWindow", "User info", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "State logger", nullptr));
         pbExit->setText(QCoreApplication::translate("MainWindow", "E&xit", nullptr));
+        label_3->setText(QCoreApplication::translate("MainWindow", "Inserted money", nullptr));
+        label_4->setText(QCoreApplication::translate("MainWindow", "Current price of coffee", nullptr));
+        label_5->setText(QCoreApplication::translate("MainWindow", "Change to be returned", nullptr));
     } // retranslateUi
 
 };

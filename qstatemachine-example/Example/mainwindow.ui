@@ -67,8 +67,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>90</y>
+      <x>10</x>
+      <y>100</y>
       <width>47</width>
       <height>16</height>
      </rect>
@@ -93,8 +93,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>256</y>
+      <x>10</x>
+      <y>260</y>
       <width>63</width>
       <height>16</height>
      </rect>
@@ -130,7 +130,7 @@
     <property name="geometry">
      <rect>
       <x>880</x>
-      <y>160</y>
+      <y>200</y>
       <width>241</width>
       <height>61</height>
      </rect>
@@ -140,7 +140,7 @@
     <property name="geometry">
      <rect>
       <x>880</x>
-      <y>240</y>
+      <y>280</y>
       <width>241</width>
       <height>61</height>
      </rect>
@@ -150,10 +150,49 @@
     <property name="geometry">
      <rect>
       <x>880</x>
-      <y>310</y>
+      <y>370</y>
       <width>241</width>
       <height>61</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>880</x>
+      <y>180</y>
+      <width>101</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Inserted money</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>880</x>
+      <y>260</y>
+      <width>151</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Current price of coffee</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>880</x>
+      <y>350</y>
+      <width>151</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Change to be returned</string>
     </property>
    </widget>
   </widget>
