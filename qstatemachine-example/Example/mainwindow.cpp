@@ -237,6 +237,9 @@ void MainWindow::sinit_entered(void)
     ui->userInfo->appendPlainText("Coffee Machine initialised.");
     ui->pb1->setText("Choose coffee option");
     ui->pb2->setText("administration");
+
+    updateChangeUI();
+
 }
 
 void MainWindow::S_waitForOption_onEntry(void)
@@ -315,6 +318,7 @@ void MainWindow::S_5C_inserted()
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     logstring += "5 cents inserted";
     credit.addCoin5c(1);
+    updateChangeUI();
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(5);
 }
@@ -324,6 +328,7 @@ void MainWindow::S_10C_inserted()
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     logstring += "10 cents inserted";
     credit.addCoin10c(1);
+    updateChangeUI();
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(10);
 }
@@ -333,6 +338,7 @@ void MainWindow::S_20C_inserted()
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     logstring += "20 cents inserted";
     credit.addCoin20c(1);
+    updateChangeUI();
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(20);
 }
@@ -342,6 +348,7 @@ void MainWindow::S_50C_inserted()
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     logstring += "50 cents inserted";
     credit.addCoin50c(1);
+    updateChangeUI();
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(50);
 }
@@ -351,6 +358,7 @@ void MainWindow::S_100C_inserted()
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     logstring += "100 cents inserted";
     credit.addCoin100c(1);
+    updateChangeUI();
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(100);
 }
@@ -433,6 +441,8 @@ void MainWindow::s_dispensingChange(void)
     logstring += "Dispensing change state";
     ui->plainTextEdit->setPlainText(logstring);
 
+    ui->change->setPlainText(QString::number(credit.getChange()));
+
     int change = credit.getChange();
     int change100 = credit.getCoin100cCount();
     int change50 = credit.getCoin50cCount();
@@ -457,7 +467,7 @@ void MainWindow::s_dispensingChange(void)
         emit internalEvent->dispense5c();
     }
     else {
-        ui->userInfo->appendPlainText("No change to dispense please call administration.");
+        ui->userInfo->appendPlainText("No suitibal change to dispense please call administration.");
         emit internalEvent->NoChange();
         ui->change->setPlainText(QString::number(credit.getChange()));
     }
@@ -470,10 +480,10 @@ void MainWindow::S_dispensing100c(void)
     ui->plainTextEdit->appendPlainText(logstring);
     credit.setChange(credit.getChange() - 100);
     credit.addCoin100c(-1);
+    updateChangeUI();
     ui->change->setPlainText(QString::number(credit.getChange()));
-    ui->userInfo->appendPlainText("Please take your change of 100 cents.");
+    ui->userInfo->appendPlainText("Dispensed 100c.");
     if (credit.getChange() > 0) {
-        ui->userInfo->appendPlainText("More change to dispense.");
         emit internalEvent->changeOver();
     } else {
         ui->userInfo->appendPlainText("No more change to dispense.");
@@ -489,10 +499,10 @@ void MainWindow::S_dispensing50c(void)
     ui->plainTextEdit->appendPlainText(logstring);
     credit.setChange(credit.getChange() - 50);
     credit.addCoin50c(-1);
+    updateChangeUI();
     ui->change->setPlainText(QString::number(credit.getChange()));
-    ui->userInfo->appendPlainText("Please take your change of 50 cents.");
+    ui->userInfo->appendPlainText("Dispensed 50c.");
     if (credit.getChange() > 0) {
-        ui->userInfo->appendPlainText("More change to dispense.");
         emit internalEvent->changeOver();
     } else {
         ui->userInfo->appendPlainText("No more change to dispense.");
@@ -507,10 +517,10 @@ void MainWindow::S_dispensing20c(void)
     ui->plainTextEdit->appendPlainText(logstring);
     credit.setChange(credit.getChange() - 20);
     credit.addCoin20c(-1);
+    updateChangeUI();
     ui->change->setPlainText(QString::number(credit.getChange()));
-    ui->userInfo->appendPlainText("Please take your change of 20 cents.");
+    ui->userInfo->appendPlainText("Dispensed 20c.");
     if (credit.getChange() > 0) {
-        ui->userInfo->appendPlainText("More change to dispense.");
         emit internalEvent->changeOver();
     } else {
         ui->userInfo->appendPlainText("No more change to dispense.");
@@ -525,10 +535,10 @@ void MainWindow::S_dispensing10c(void)
     ui->plainTextEdit->appendPlainText(logstring);
     credit.setChange(credit.getChange() - 10);
     credit.addCoin10c(-1);
+    updateChangeUI();
     ui->change->setPlainText(QString::number(credit.getChange()));
-    ui->userInfo->appendPlainText("Please take your change of 10 cents.");
+    ui->userInfo->appendPlainText("Dispensed 10c.");
     if (credit.getChange() > 0) {
-        ui->userInfo->appendPlainText("More change to dispense.");
         emit internalEvent->changeOver();
     } else {
         ui->userInfo->appendPlainText("No more change to dispense.");
@@ -543,10 +553,10 @@ void MainWindow::S_dispensing5c(void)
     ui->plainTextEdit->appendPlainText(logstring);
     credit.setChange(credit.getChange() - 5);
     credit.addCoin5c(-1);
+    updateChangeUI();
     ui->change->setPlainText(QString::number(credit.getChange()));
-    ui->userInfo->appendPlainText("Please take your change of 5 cents.");
+    ui->userInfo->appendPlainText("Dispensed 5c");
     if (credit.getChange() > 0) {
-        ui->userInfo->appendPlainText("More change to dispense.");
         emit internalEvent->changeOver();
     } else {
         ui->userInfo->appendPlainText("No more change to dispense.");
@@ -567,4 +577,13 @@ void MainWindow::S_waitForChangePickup(void)
     ui->pb5->setText("");
     ui->price->setPlainText(QString::number(credit.getPrice()));
     ui->change->setPlainText(QString::number(credit.getChange()));
+}
+
+void MainWindow::updateChangeUI()
+{
+    ui->c5->setPlainText(QString::number(credit.getCoin5cCount()));
+    ui->c10->setPlainText(QString::number(credit.getCoin10cCount()));
+    ui->c20->setPlainText(QString::number(credit.getCoin20cCount()));
+    ui->c50->setPlainText(QString::number(credit.getCoin50cCount()));
+    ui->c100->setPlainText(QString::number(credit.getCoin100cCount()));
 }

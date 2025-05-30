@@ -67,6 +67,7 @@ private slots:
     void S_dispensing10c(void);
     void S_dispensing5c(void);
     void S_waitForChangePickup(void);
+    void updateChangeUI();
 
 private:
     Ui::MainWindow *ui;
