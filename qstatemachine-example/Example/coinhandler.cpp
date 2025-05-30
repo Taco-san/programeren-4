@@ -7,11 +7,11 @@ coinhandler::coinhandler()
     change_ = 0;
     price_ = 0;
     coffeetype_ = 0;
-    coin5c_ = 0;
-    coin10c_ = 0;
-    coin20c_ = 0;
-    coin50c_ = 0;
-    coin100c_ = 0;
+    coin5c_ = 5;
+    coin10c_ = 5;
+    coin20c_ = 5;
+    coin50c_ = 5;
+    coin100c_ = 5;
 }
 
 int coinhandler::getCredit()

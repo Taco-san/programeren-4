@@ -248,6 +248,7 @@ void MainWindow::S_waitForOption_onEntry(void)
     logstring += "entered S_waitForOption";
     ui->plainTextEdit->appendPlainText(logstring);
     credit.setPrice(0); // Reset price for new selection
+    credit.setCredit(0); // Reset credit for new selection
     credit.setType(0); // Reset coffee type
     credit.setChange(0); // Reset change
     ui->price->setPlainText(QString::number(credit.getPrice()));
@@ -496,7 +497,6 @@ void MainWindow::S_dispensing50c(void)
     } else {
         ui->userInfo->appendPlainText("No more change to dispense.");
         emit internalEvent->NoChange();
-        credit.setCredit(0);
     }
 }
 
@@ -514,8 +514,7 @@ void MainWindow::S_dispensing20c(void)
         emit internalEvent->changeOver();
     } else {
         ui->userInfo->appendPlainText("No more change to dispense.");
-        emit internalEvent->NoChange();
-        credit.setCredit(0);
+        emit internalEvent->NoChange();;
     }
 }
 
@@ -534,7 +533,6 @@ void MainWindow::S_dispensing10c(void)
     } else {
         ui->userInfo->appendPlainText("No more change to dispense.");
         emit internalEvent->NoChange();
-        credit.setCredit(0);
     }
 }
 
@@ -553,7 +551,6 @@ void MainWindow::S_dispensing5c(void)
     } else {
         ui->userInfo->appendPlainText("No more change to dispense.");
         emit internalEvent->NoChange();
-        credit.setCredit(0);
     }
 }
 
@@ -568,10 +565,6 @@ void MainWindow::S_waitForChangePickup(void)
     ui->pb3->setText("");
     ui->pb4->setText("");
     ui->pb5->setText("");
-
-    // Reset values here
-    credit.setPrice(0);
-    credit.setChange(0);
     ui->price->setPlainText(QString::number(credit.getPrice()));
     ui->change->setPlainText(QString::number(credit.getChange()));
 }

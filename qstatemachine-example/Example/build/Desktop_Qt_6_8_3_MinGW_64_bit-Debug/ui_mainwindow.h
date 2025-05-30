@@ -103,10 +103,10 @@ public:
         pbExit->setGeometry(QRect(9, 430, 80, 24));
         price = new QPlainTextEdit(centralwidget);
         price->setObjectName("price");
-        price->setGeometry(QRect(880, 200, 241, 61));
+        price->setGeometry(QRect(880, 290, 241, 61));
         credit = new QPlainTextEdit(centralwidget);
         credit->setObjectName("credit");
-        credit->setGeometry(QRect(880, 280, 241, 61));
+        credit->setGeometry(QRect(880, 200, 241, 61));
         change = new QPlainTextEdit(centralwidget);
         change->setObjectName("change");
         change->setGeometry(QRect(880, 370, 241, 61));
