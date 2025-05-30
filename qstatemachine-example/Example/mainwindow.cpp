@@ -81,6 +81,22 @@ MainWindow::MainWindow(QWidget *parent)
     s_optionCappuchino->addTransition(ui->pb2, &QPushButton::clicked, s_waitForOption);
     s_optionEspresso->addTransition(ui->pb2, &QPushButton::clicked, s_waitForOption);
     s_optionCoffee->addTransition(ui->pb2, &QPushButton::clicked, s_waitForOption);
+    s_waitForCoins->addTransition(ui->pb1, &QPushButton::clicked, s_process5C);
+    s_waitForCoins->addTransition(ui->pb2, &QPushButton::clicked, s_process10C);
+    s_waitForCoins->addTransition(ui->pb3, &QPushButton::clicked, s_process20C);
+    s_waitForCoins->addTransition(ui->pb4, &QPushButton::clicked, s_process50C);
+    s_waitForCoins->addTransition(ui->pb5, &QPushButton::clicked, s_process100C);
+    s_process5C->addTransition(internalEvent, SIGNAL(customNotEnough()), s_waitForCoins);
+    s_process5C->addTransition(internalEvent, SIGNAL(customEnough()), s_dispensingCoffeeState);
+    s_process10C->addTransition(internalEvent, SIGNAL(customNotEnough()), s_waitForCoins);
+    s_process10C->addTransition(internalEvent, SIGNAL(customEnough()), s_dispensingCoffeeState);
+    s_process20C->addTransition(internalEvent, SIGNAL(customNotEnough()), s_waitForCoins);
+    s_process20C->addTransition(internalEvent, SIGNAL(customEnough()), s_dispensingCoffeeState);
+    s_process50C->addTransition(internalEvent, SIGNAL(customNotEnough()), s_waitForCoins);
+    s_process50C->addTransition(internalEvent, SIGNAL(customEnough()), s_dispensingCoffeeState);
+    s_process100C->addTransition(internalEvent, SIGNAL(customNotEnough()), s_waitForCoins);
+    s_process100C->addTransition(internalEvent, SIGNAL(customEnough()), s_dispensingCoffeeState);
+
 
     // Add all other states
     statemachine.addState(s_0);
@@ -136,12 +152,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(s_optionEspresso, &QState::entered, this, &MainWindow::S_OptionEspresso_onEntry);
     connect(s_optionCoffee, &QState::entered, this, &MainWindow::S_OptionCoffee_onEntry);
 
-    connect(s_waitForCoins, &QState::entered, this, [](){ qDebug() << "Entered s_waitForCoins"; });
-    connect(s_process5C, &QState::entered, this, [](){ qDebug() << "Entered s_process5C"; });
-    connect(s_process10C, &QState::entered, this, [](){ qDebug() << "Entered s_process10C"; });
-    connect(s_process20C, &QState::entered, this, [](){ qDebug() << "Entered s_process20C"; });
-    connect(s_process50C, &QState::entered, this, [](){ qDebug() << "Entered s_process50C"; });
-    connect(s_process100C, &QState::entered, this, [](){ qDebug() << "Entered s_process100C"; });
+    connect(s_waitForCoins, &QState::entered, this, &MainWindow::S_waitingForCoins);
+    connect(s_process5C, &QState::entered, this, &MainWindow::S_5C_inserted);
+    connect(s_process10C, &QState::entered, this, &MainWindow::S_10C_inserted);
+    connect(s_process20C, &QState::entered, this, &MainWindow::S_20C_inserted);
+    connect(s_process50C, &QState::entered, this,  &MainWindow::S_50C_inserted);
+    connect(s_process100C, &QState::entered, this, &MainWindow::S_100C_inserted);
 
     connect(s_dispensingCoffeeState, &QState::entered, this, [](){ qDebug() << "Entered s_dispensingCoffeeState"; });
     connect(s_dispensingCappuchino, &QState::entered, this, [](){ qDebug() << "Entered s_dispensingCappuchino"; });
@@ -248,3 +264,75 @@ void MainWindow::S_OptionCoffee_onEntry(void)
     ui->price->appendPlainText(QString::number(credit.getPrice()));
 }
 
+void MainWindow::S_waitingForCoins()
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Waiting for coins to be inserted";
+    ui->plainTextEdit->appendPlainText(logstring);
+    ui->userInfo->appendPlainText("Please insert coins to pay for your coffee.");
+    ui->pb1->setText("Insert 5 cents");
+    ui->pb2->setText("Insert 10 cents");
+    ui->pb3->setText("Insert 20 cents");
+    ui->pb4->setText("Insert 50 cents");
+    ui->pb5->setText("Insert 100 cents");
+}
+
+void MainWindow::S_5C_inserted()
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "5 cents inserted";
+    ui->plainTextEdit->appendPlainText(logstring);
+    ProcessMoney(5);
+}
+
+void MainWindow::S_10C_inserted()
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "10 cents inserted";
+    ui->plainTextEdit->appendPlainText(logstring);
+    ProcessMoney(10);
+}
+
+void MainWindow::S_20C_inserted()
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "20 cents inserted";
+    ui->plainTextEdit->appendPlainText(logstring);
+    ProcessMoney(20);
+}
+
+void MainWindow::S_50C_inserted()
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "50 cents inserted";
+    ui->plainTextEdit->appendPlainText(logstring);
+    ProcessMoney(50);
+}
+
+void MainWindow::S_100C_inserted()
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "100 cents inserted";
+    ui->plainTextEdit->appendPlainText(logstring);
+    ProcessMoney(100);
+}
+void MainWindow::ProcessMoney(int money)
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Processing money: " + QString::number(money) + " cents";
+    ui->plainTextEdit->appendPlainText(logstring);
+
+    credit.setCredit(credit.getCredit() + money);
+    ui->credit->appendPlainText(QString::number(credit.getCredit()));
+
+    if (credit.getCredit() >= credit.getPrice()) {
+        // Enough credit to dispense coffee
+        ui->userInfo->appendPlainText("Enough credit to dispense coffee.");
+        // Transition to dispensing state
+        statemachine.postEvent(new QEvent(QEvent::User));
+        emit internalEvent->customEnough();
+    } else {
+        ui->userInfo->appendPlainText("Not enough credit. Please insert more coins.");
+        emit internalEvent->customNotEnough();
+    }
+}

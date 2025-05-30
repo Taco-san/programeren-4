@@ -33,7 +33,7 @@ public:
     QPushButton *pb2;
     QPushButton *pb3;
     QPushButton *pb4;
-    QPushButton *pushButton_2;
+    QPushButton *pb5;
     QLabel *label_2;
     QPlainTextEdit *userInfo;
     QLabel *label;
@@ -77,10 +77,10 @@ public:
 
         horizontalLayout->addWidget(pb4);
 
-        pushButton_2 = new QPushButton(groupBox);
-        pushButton_2->setObjectName("pushButton_2");
+        pb5 = new QPushButton(groupBox);
+        pb5->setObjectName("pb5");
 
-        horizontalLayout->addWidget(pushButton_2);
+        horizontalLayout->addWidget(pb5);
 
         label_2 = new QLabel(centralwidget);
         label_2->setObjectName("label_2");
@@ -130,7 +130,7 @@ public:
         pb2->setText(QString());
         pb3->setText(QString());
         pb4->setText(QString());
-        pushButton_2->setText(QString());
+        pb5->setText(QString());
         label_2->setText(QCoreApplication::translate("MainWindow", "User info", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "State logger", nullptr));
         pbExit->setText(QCoreApplication::translate("MainWindow", "E&xit", nullptr));
