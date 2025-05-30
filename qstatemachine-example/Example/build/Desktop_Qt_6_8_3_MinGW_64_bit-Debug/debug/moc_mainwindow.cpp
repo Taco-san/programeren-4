@@ -41,7 +41,10 @@ static constexpr auto qt_meta_stringdata_ZN12CustomObjectE = QtMocHelpers::strin
     "customSignal",
     "",
     "customEnough",
-    "customNotEnough"
+    "customNotEnough",
+    "dispenseCoffee",
+    "dispenseCappuchino",
+    "dispenseEspresso"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -53,19 +56,25 @@ Q_CONSTINIT static const uint qt_meta_data_ZN12CustomObjectE[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       3,       // signalCount
+       6,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   32,    2, 0x06,    1 /* Public */,
-       3,    0,   33,    2, 0x06,    2 /* Public */,
-       4,    0,   34,    2, 0x06,    3 /* Public */,
+       1,    0,   50,    2, 0x06,    1 /* Public */,
+       3,    0,   51,    2, 0x06,    2 /* Public */,
+       4,    0,   52,    2, 0x06,    3 /* Public */,
+       5,    0,   53,    2, 0x06,    4 /* Public */,
+       6,    0,   54,    2, 0x06,    5 /* Public */,
+       7,    0,   55,    2, 0x06,    6 /* Public */,
 
  // signals: parameters
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -87,6 +96,12 @@ Q_CONSTINIT const QMetaObject CustomObject::staticMetaObject = { {
         // method 'customEnough'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'customNotEnough'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'dispenseCoffee'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'dispenseCappuchino'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'dispenseEspresso'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -100,6 +115,9 @@ void CustomObject::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 0: _t->customSignal(); break;
         case 1: _t->customEnough(); break;
         case 2: _t->customNotEnough(); break;
+        case 3: _t->dispenseCoffee(); break;
+        case 4: _t->dispenseCappuchino(); break;
+        case 5: _t->dispenseEspresso(); break;
         default: ;
         }
     }
@@ -126,6 +144,27 @@ void CustomObject::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
                 return;
             }
         }
+        {
+            using _q_method_type = void (CustomObject::*)();
+            if (_q_method_type _q_method = &CustomObject::dispenseCoffee; *reinterpret_cast<_q_method_type *>(_a[1]) == _q_method) {
+                *result = 3;
+                return;
+            }
+        }
+        {
+            using _q_method_type = void (CustomObject::*)();
+            if (_q_method_type _q_method = &CustomObject::dispenseCappuchino; *reinterpret_cast<_q_method_type *>(_a[1]) == _q_method) {
+                *result = 4;
+                return;
+            }
+        }
+        {
+            using _q_method_type = void (CustomObject::*)();
+            if (_q_method_type _q_method = &CustomObject::dispenseEspresso; *reinterpret_cast<_q_method_type *>(_a[1]) == _q_method) {
+                *result = 5;
+                return;
+            }
+        }
     }
 }
 
@@ -148,14 +187,14 @@ int CustomObject::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 6)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 6;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 6)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 3;
+        _id -= 6;
     }
     return _id;
 }
@@ -176,6 +215,24 @@ void CustomObject::customEnough()
 void CustomObject::customNotEnough()
 {
     QMetaObject::activate(this, &staticMetaObject, 2, nullptr);
+}
+
+// SIGNAL 3
+void CustomObject::dispenseCoffee()
+{
+    QMetaObject::activate(this, &staticMetaObject, 3, nullptr);
+}
+
+// SIGNAL 4
+void CustomObject::dispenseCappuchino()
+{
+    QMetaObject::activate(this, &staticMetaObject, 4, nullptr);
+}
+
+// SIGNAL 5
+void CustomObject::dispenseEspresso()
+{
+    QMetaObject::activate(this, &staticMetaObject, 5, nullptr);
 }
 namespace {
 struct qt_meta_tag_ZN10MainWindowE_t {};
@@ -198,7 +255,11 @@ static constexpr auto qt_meta_stringdata_ZN10MainWindowE = QtMocHelpers::stringD
     "S_50C_inserted",
     "S_100C_inserted",
     "ProcessMoney",
-    "money"
+    "money",
+    "S_ProcessingCoffee",
+    "S_dispensedCappuchino",
+    "S_dispensedEspresso",
+    "S_dispensedCoffee"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -210,7 +271,7 @@ Q_CONSTINIT static const uint qt_meta_data_ZN10MainWindowE[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-      12,   14, // methods
+      16,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -218,18 +279,22 @@ Q_CONSTINIT static const uint qt_meta_data_ZN10MainWindowE[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,   86,    2, 0x08,    1 /* Private */,
-       3,    0,   87,    2, 0x08,    2 /* Private */,
-       4,    0,   88,    2, 0x08,    3 /* Private */,
-       5,    0,   89,    2, 0x08,    4 /* Private */,
-       6,    0,   90,    2, 0x08,    5 /* Private */,
-       7,    0,   91,    2, 0x08,    6 /* Private */,
-       8,    0,   92,    2, 0x08,    7 /* Private */,
-       9,    0,   93,    2, 0x08,    8 /* Private */,
-      10,    0,   94,    2, 0x08,    9 /* Private */,
-      11,    0,   95,    2, 0x08,   10 /* Private */,
-      12,    0,   96,    2, 0x08,   11 /* Private */,
-      13,    1,   97,    2, 0x08,   12 /* Private */,
+       1,    0,  110,    2, 0x08,    1 /* Private */,
+       3,    0,  111,    2, 0x08,    2 /* Private */,
+       4,    0,  112,    2, 0x08,    3 /* Private */,
+       5,    0,  113,    2, 0x08,    4 /* Private */,
+       6,    0,  114,    2, 0x08,    5 /* Private */,
+       7,    0,  115,    2, 0x08,    6 /* Private */,
+       8,    0,  116,    2, 0x08,    7 /* Private */,
+       9,    0,  117,    2, 0x08,    8 /* Private */,
+      10,    0,  118,    2, 0x08,    9 /* Private */,
+      11,    0,  119,    2, 0x08,   10 /* Private */,
+      12,    0,  120,    2, 0x08,   11 /* Private */,
+      13,    1,  121,    2, 0x08,   12 /* Private */,
+      15,    0,  124,    2, 0x08,   14 /* Private */,
+      16,    0,  125,    2, 0x08,   15 /* Private */,
+      17,    0,  126,    2, 0x08,   16 /* Private */,
+      18,    0,  127,    2, 0x08,   17 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -244,6 +309,10 @@ Q_CONSTINIT static const uint qt_meta_data_ZN10MainWindowE[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,   14,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -281,7 +350,15 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'ProcessMoney'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        QtPrivate::TypeAndForceComplete<int, std::false_type>
+        QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        // method 'S_ProcessingCoffee'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'S_dispensedCappuchino'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'S_dispensedEspresso'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'S_dispensedCoffee'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
 } };
@@ -303,6 +380,10 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 9: _t->S_50C_inserted(); break;
         case 10: _t->S_100C_inserted(); break;
         case 11: _t->ProcessMoney((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 12: _t->S_ProcessingCoffee(); break;
+        case 13: _t->S_dispensedCappuchino(); break;
+        case 14: _t->S_dispensedEspresso(); break;
+        case 15: _t->S_dispensedCoffee(); break;
         default: ;
         }
     }
@@ -327,14 +408,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 12)
+        if (_id < 16)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 16;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 12)
+        if (_id < 16)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 12;
+        _id -= 16;
     }
     return _id;
 }

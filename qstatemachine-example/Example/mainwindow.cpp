@@ -96,6 +96,12 @@ MainWindow::MainWindow(QWidget *parent)
     s_process50C->addTransition(internalEvent, SIGNAL(customEnough()), s_dispensingCoffeeState);
     s_process100C->addTransition(internalEvent, SIGNAL(customNotEnough()), s_waitForCoins);
     s_process100C->addTransition(internalEvent, SIGNAL(customEnough()), s_dispensingCoffeeState);
+    s_dispensingCoffeeState->addTransition(internalEvent, SIGNAL(dispenseCappuchino()), s_dispensingCappuchino);
+    s_dispensingCoffeeState->addTransition(internalEvent, SIGNAL(dispenseEspresso()), s_dispensingEspresso);
+    s_dispensingCoffeeState->addTransition(internalEvent, SIGNAL(dispenseCoffee()), s_dispensingCoffee);
+    s_dispensingCappuchino->addTransition(ui->pb1, &QPushButton::clicked, s_dispensingChangeState);
+    s_dispensingEspresso->addTransition(ui->pb1, &QPushButton::clicked, s_dispensingChangeState);
+    s_dispensingCoffee->addTransition(ui->pb1, &QPushButton::clicked, s_dispensingChangeState);
 
 
     // Add all other states
@@ -159,10 +165,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(s_process50C, &QState::entered, this,  &MainWindow::S_50C_inserted);
     connect(s_process100C, &QState::entered, this, &MainWindow::S_100C_inserted);
 
-    connect(s_dispensingCoffeeState, &QState::entered, this, [](){ qDebug() << "Entered s_dispensingCoffeeState"; });
-    connect(s_dispensingCappuchino, &QState::entered, this, [](){ qDebug() << "Entered s_dispensingCappuchino"; });
-    connect(s_dispensingEspresso, &QState::entered, this, [](){ qDebug() << "Entered s_dispensingEspresso"; });
-    connect(s_dispensingCoffee, &QState::entered, this, [](){ qDebug() << "Entered s_dispensingCoffee"; });
+    connect(s_dispensingCoffeeState, &QState::entered, this, &MainWindow::S_ProcessingCoffee);
+    connect(s_dispensingCappuchino, &QState::entered, this, &MainWindow::S_dispensedCappuchino);
+    connect(s_dispensingEspresso, &QState::entered, this, &MainWindow::S_dispensedEspresso);
+    connect(s_dispensingCoffee, &QState::entered, this, &MainWindow::S_dispensedCoffee);
 
     connect(s_dispensingChangeState, &QState::entered, this, [](){ qDebug() << "Entered s_dispensingChangeState"; });
     connect(s_dispense100C, &QState::entered, this, [](){ qDebug() << "Entered s_dispense100C"; });
@@ -235,6 +241,7 @@ void MainWindow::S_OptionCappuchino_onEntry(void)
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     credit.setPrice(175);
+    credit.setType(1); // Set coffee type to Cappuchino
     ui->userInfo->appendPlainText("Cappuchino selected. Price is 175 cents.");
     ui->pb1->setText("Confirm selection");
     ui->pb2->setText("Cancel selection");
@@ -247,6 +254,7 @@ void MainWindow::S_OptionEspresso_onEntry(void)
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     ui->userInfo->appendPlainText("Espresso selected. Price is 225 cents.");
     credit.setPrice(225);
+    credit.setType(2); // Set coffee type to Espresso
     ui->pb1->setText("Confirm selection");
     ui->pb2->setText("Cancel selection");
     ui->pb3->setText("");
@@ -257,6 +265,7 @@ void MainWindow::S_OptionCoffee_onEntry(void)
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     credit.setPrice(150);
+    credit.setType(3); // Set coffee type to Coffee
     ui->userInfo->appendPlainText("Coffee selected. Price is 150 cents.");
     ui->pb1->setText("Confirm selection");
     ui->pb2->setText("Cancel selection");
@@ -335,4 +344,56 @@ void MainWindow::ProcessMoney(int money)
         ui->userInfo->appendPlainText("Not enough credit. Please insert more coins.");
         emit internalEvent->customNotEnough();
     }
+}
+
+void MainWindow::S_ProcessingCoffee(void)
+{
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    switch(credit.getType()) {
+        case 1: // Cappuchino
+            logstring += "Dispensing Cappuchino";
+            statemachine.postEvent(new QEvent(QEvent::User));
+            emit internalEvent->dispenseCappuchino();
+            ui->plainTextEdit->appendPlainText(logstring);
+            break;
+        case 2: // Espresso
+            logstring += "Dispensing Espresso";
+            statemachine.postEvent(new QEvent(QEvent::User));
+            emit internalEvent->dispenseEspresso();
+            ui->plainTextEdit->appendPlainText(logstring);
+            break;
+        case 3: // Coffee
+            logstring += "Dispensing Coffee";
+            statemachine.postEvent(new QEvent(QEvent::User));
+            emit internalEvent->dispenseCoffee();
+            ui->plainTextEdit->appendPlainText(logstring);
+            break;
+        default:
+            ui->userInfo->appendPlainText("Unknown coffee type selected.");
+    }
+}
+
+void MainWindow::S_dispensedCappuchino(void)
+{
+    ui->pb1->setText("take your Cappuchino");
+    ui->pb2->setText("");
+    ui->pb3->setText("");
+    ui->pb4->setText("");
+    ui->pb5->setText("");
+}
+void MainWindow::S_dispensedEspresso(void)
+{
+    ui->pb1->setText("take your Espresso");
+    ui->pb2->setText("");
+    ui->pb3->setText("");
+    ui->pb4->setText("");
+    ui->pb5->setText("");
+}
+void MainWindow::S_dispensedCoffee(void)
+{
+    ui->pb1->setText("take your Coffee");
+    ui->pb2->setText("");
+    ui->pb3->setText("");
+    ui->pb4->setText("");
+    ui->pb5->setText("");
 }

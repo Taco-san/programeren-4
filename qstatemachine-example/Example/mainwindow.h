@@ -19,6 +19,9 @@ signals:
     void customSignal();                    /// three possible signals to be used with this object
     void customEnough();
     void customNotEnough();
+    void dispenseCoffee();
+    void dispenseCappuchino();
+    void dispenseEspresso();
 };
 
 
@@ -46,6 +49,10 @@ private slots:
     void S_50C_inserted(void);
     void S_100C_inserted(void);
     void ProcessMoney(int money);
+    void S_ProcessingCoffee(void);
+    void S_dispensedCappuchino(void);
+    void S_dispensedEspresso(void);
+    void S_dispensedCoffee(void);
 
 private:
     Ui::MainWindow *ui;

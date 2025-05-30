@@ -20,10 +20,14 @@ public:
 
     bool checkCredit(void);
 
+    void setType(int amount);
+    int getType();
+
 private:
     int credit_;
     int change_;
     int price_;
+    int coffeetype_;
 };
 
 #endif // COINHANDLER_H

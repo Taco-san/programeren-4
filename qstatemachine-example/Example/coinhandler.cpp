@@ -6,6 +6,7 @@ coinhandler::coinhandler()
     credit_ = 0;
     change_ = 0;
     price_ = 0;
+    coffeetype_ = 0;
 }
 
 int coinhandler::getCredit()
@@ -59,4 +60,14 @@ bool coinhandler::checkCredit(void)
 {
     if (credit_ - price_ < 0) return false;
     return true;
+}
+
+void coinhandler::setType(int amount)
+{
+    coffeetype_ = amount;
+}
+
+int coinhandler::getType()
+{
+    return coffeetype_;
 }
