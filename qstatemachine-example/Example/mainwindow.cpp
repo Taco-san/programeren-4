@@ -151,6 +151,9 @@ MainWindow::MainWindow(QWidget *parent)
     s_refillCappuchino->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
     s_waitForRefill->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
     s_waitForChangePickup->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_optionCoffee->addTransition(internalEvent, SIGNAL(NoCoffeeType()), s_waitForOption);
+    s_optionCappuchino->addTransition(internalEvent, SIGNAL(NoCoffeeType()), s_waitForOption);
+    s_optionEspresso->addTransition(internalEvent, SIGNAL(NoCoffeeType()), s_waitForOption);
 
 
 
@@ -271,6 +274,7 @@ void MainWindow::sinit_entered(void)
     ui->pb1->setText("Choose coffee option");
     ui->pb2->setText("administration");
     savingHandler::loadData(credit, coffeeType, "data.txt");
+    updateCoffeeTypeUI();
 
     updateChangeUI();
 
@@ -292,39 +296,67 @@ void MainWindow::S_waitForOption_onEntry(void)
     ui->credit->setPlainText(QString::number(credit.getCredit()));
     ui->change->setPlainText(QString::number(credit.getChange()));
 
-    ui->pb1->setText("Coffee 150 cents");
-    ui->pb2->setText("Cappuchino 175 cents");
-    ui->pb3->setText("Espresso 225 cents");
+    if (coffeeType.getCappuchinoCount() == 0) {
+        ui->pb1->setText("Cappuchino (out of stock)");
+    } else {
+        ui->pb1->setText("Cappuchino 175 cents");
+    }
+    if (coffeeType.getEspressoCount() == 0) {
+        ui->pb2->setText("Espresso (out of stock)");
+    } else {
+        ui->pb2->setText("Espresso 225 cents");
+    }
+    if (coffeeType.getCoffeeCount() == 0) {
+        ui->pb3->setText("Coffee (out of stock)");
+    } else {
+        ui->pb3->setText("Coffee 150 cents");
+    }
     ui->userInfo->appendPlainText("Please choose your coffee");
 }
 
 void MainWindow::S_OptionCappuchino_onEntry(void)
 {
-    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-    credit.setPrice(175);
-    credit.setType(1); // Set coffee type to Cappuchino
-    ui->userInfo->appendPlainText("Cappuchino selected. Price is 175 cents.");
-    ui->pb1->setText("Confirm selection");
-    ui->pb2->setText("Cancel selection");
-    ui->pb3->setText("");
-    ui->price->setPlainText(QString::number(credit.getPrice()));
+    if (coffeeType.getCappuchinoCount() == 0) {
+        ui->userInfo->appendPlainText("No Cappuchino available. Please choose another option.");
+        emit internalEvent->NoCoffeeType();
+    } else {
+        QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+        credit.setPrice(175);
+        credit.setType(1); // Set coffee type to Cappuchino
+        ui->userInfo->appendPlainText("Cappuchino selected. Price is 175 cents.");
+        ui->pb1->setText("Confirm selection");
+        ui->pb2->setText("Cancel selection");
+        ui->pb3->setText("");
+        ui->price->setPlainText(QString::number(credit.getPrice()));
+    }
 }
 
 void MainWindow::S_OptionEspresso_onEntry(void)
 {
-    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-    ui->userInfo->appendPlainText("Espresso selected. Price is 225 cents.");
-    credit.setPrice(225);
-    credit.setType(2); // Set coffee type to Espresso
-    ui->pb1->setText("Confirm selection");
-    ui->pb2->setText("Cancel selection");
-    ui->pb3->setText("");
-    ui->price->setPlainText(QString::number(credit.getPrice()));
+    if (coffeeType.getEspressoCount() == 0) {
+        ui->userInfo->appendPlainText("No Espresso available. Please choose another option.");
+        emit internalEvent->NoCoffeeType();
+    } else {
+        QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+        credit.setPrice(225);
+        credit.setType(2); // Set coffee type to Espresso
+        ui->userInfo->appendPlainText("Espresso selected. Price is 225 cents.");
+        ui->pb1->setText("Confirm selection");
+        ui->pb2->setText("Cancel selection");
+        ui->pb3->setText("");
+        ui->price->setPlainText(QString::number(credit.getPrice()));
+    }
 }
 
 void MainWindow::S_OptionCoffee_onEntry(void)
 {
-    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    if (coffeeType.getCoffeeCount() == 0) {
+        ui->userInfo->appendPlainText("No Coffee available. Please choose another option.");
+        emit internalEvent->NoCoffeeType();
+    }
+    else
+    {
+            QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     credit.setPrice(150);
     credit.setType(3); // Set coffee type to Coffee
     ui->userInfo->appendPlainText("Coffee selected. Price is 150 cents.");
@@ -332,6 +364,7 @@ void MainWindow::S_OptionCoffee_onEntry(void)
     ui->pb2->setText("Cancel selection");
     ui->pb3->setText("");
     ui->price->setPlainText(QString::number(credit.getPrice()));
+    }
 }
 
 void MainWindow::S_waitingForCoins()
@@ -451,6 +484,7 @@ void MainWindow::S_dispensedCappuchino(void)
     ui->pb3->setText("");
     ui->pb4->setText("");
     ui->pb5->setText("");
+    updateCoffeeTypeUI();
 }
 void MainWindow::S_dispensedEspresso(void)
 {
@@ -459,6 +493,7 @@ void MainWindow::S_dispensedEspresso(void)
     ui->pb3->setText("");
     ui->pb4->setText("");
     ui->pb5->setText("");
+    updateCoffeeTypeUI();
 }
 void MainWindow::S_dispensedCoffee(void)
 {
@@ -467,6 +502,7 @@ void MainWindow::S_dispensedCoffee(void)
     ui->pb3->setText("");
     ui->pb4->setText("");
     ui->pb5->setText("");
+    updateCoffeeTypeUI();
 }
 
 void MainWindow::s_dispensingChange(void)
@@ -628,4 +664,11 @@ void MainWindow::onShutdown(){
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     // ... any other shutdown logic ...
     QApplication::quit();
+}
+
+void MainWindow::updateCoffeeTypeUI()
+{
+    ui->cappuchinoCount->setPlainText(QString::number(coffeeType.getCappuchinoCount()));
+    ui->espressoCount->setPlainText(QString::number(coffeeType.getEspressoCount()));
+    ui->coffeeCount->setPlainText(QString::number(coffeeType.getCoffeeCount()));
 }

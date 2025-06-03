@@ -31,6 +31,7 @@ signals:
     void dispense100c();
     void NoChange();
     void changeOver();
+    void NoCoffeeType();
 };
 
 
@@ -72,6 +73,7 @@ private slots:
     void S_waitForChangePickup(void);
     void updateChangeUI();
     void onShutdown();
+    void updateCoffeeTypeUI();
 
 private:
     Ui::MainWindow *ui;

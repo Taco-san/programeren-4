@@ -56,6 +56,13 @@ public:
     QLabel *label_10;
     QLabel *label_11;
     QPushButton *pbShutdown;
+    QLabel *label_12;
+    QPlainTextEdit *coffeeCount;
+    QPlainTextEdit *cappuchinoCount;
+    QPlainTextEdit *espressoCount;
+    QLabel *label_13;
+    QLabel *label_14;
+    QLabel *label_15;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -163,6 +170,27 @@ public:
         pbShutdown = new QPushButton(centralwidget);
         pbShutdown->setObjectName("pbShutdown");
         pbShutdown->setGeometry(QRect(10, 430, 212, 24));
+        label_12 = new QLabel(centralwidget);
+        label_12->setObjectName("label_12");
+        label_12->setGeometry(QRect(630, 300, 181, 31));
+        coffeeCount = new QPlainTextEdit(centralwidget);
+        coffeeCount->setObjectName("coffeeCount");
+        coffeeCount->setGeometry(QRect(630, 350, 61, 31));
+        cappuchinoCount = new QPlainTextEdit(centralwidget);
+        cappuchinoCount->setObjectName("cappuchinoCount");
+        cappuchinoCount->setGeometry(QRect(700, 350, 61, 31));
+        espressoCount = new QPlainTextEdit(centralwidget);
+        espressoCount->setObjectName("espressoCount");
+        espressoCount->setGeometry(QRect(770, 350, 61, 31));
+        label_13 = new QLabel(centralwidget);
+        label_13->setObjectName("label_13");
+        label_13->setGeometry(QRect(640, 320, 41, 31));
+        label_14 = new QLabel(centralwidget);
+        label_14->setObjectName("label_14");
+        label_14->setGeometry(QRect(700, 320, 61, 31));
+        label_15 = new QLabel(centralwidget);
+        label_15->setObjectName("label_15");
+        label_15->setGeometry(QRect(770, 320, 61, 31));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -203,6 +231,13 @@ public:
         label_10->setText(QCoreApplication::translate("MainWindow", "50c", nullptr));
         label_11->setText(QCoreApplication::translate("MainWindow", "100c", nullptr));
         pbShutdown->setText(QCoreApplication::translate("MainWindow", "Shutdown", nullptr));
+        label_12->setText(QCoreApplication::translate("MainWindow", "Amount of coffee in machine", nullptr));
+        coffeeCount->setPlainText(QCoreApplication::translate("MainWindow", "x", nullptr));
+        cappuchinoCount->setPlainText(QCoreApplication::translate("MainWindow", "x", nullptr));
+        espressoCount->setPlainText(QCoreApplication::translate("MainWindow", "x", nullptr));
+        label_13->setText(QCoreApplication::translate("MainWindow", "Coffee", nullptr));
+        label_14->setText(QCoreApplication::translate("MainWindow", "Capuchino", nullptr));
+        label_15->setText(QCoreApplication::translate("MainWindow", "Espresso", nullptr));
     } // retranslateUi
 
 };
