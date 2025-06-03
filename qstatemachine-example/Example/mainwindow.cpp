@@ -57,6 +57,9 @@ MainWindow::MainWindow(QWidget *parent)
     QState *s_dispense10C = new QState();
     QState *s_dispense5C = new QState();
 
+    QState *s_changeRefill = new QState();
+    QState *s_refillCoffeeType = new QState();
+    QState *s_adminPanel = new QState();
     QState *s_refill100C = new QState();
     QState *s_refill50C = new QState();
     QState *s_refill20C = new QState();
@@ -154,6 +157,11 @@ MainWindow::MainWindow(QWidget *parent)
     s_optionCoffee->addTransition(internalEvent, SIGNAL(NoCoffeeType()), s_waitForOption);
     s_optionCappuchino->addTransition(internalEvent, SIGNAL(NoCoffeeType()), s_waitForOption);
     s_optionEspresso->addTransition(internalEvent, SIGNAL(NoCoffeeType()), s_waitForOption);
+    s_init->addTransition(ui->pb2, &QPushButton::clicked, s_adminPanel);  
+    s_waitForOption->addTransition(ui->pb6, &QPushButton::clicked, s_adminPanel);
+    s_adminPanel->addTransition(ui->pb1, &QPushButton::clicked, s_refillCoffeeType);
+    s_adminPanel->addTransition(ui->pb2, &QPushButton::clicked, s_changeRefill);
+    s_adminPanel->addTransition(ui->pb3, &QPushButton::clicked, s_waitForOption);
 
 
 
@@ -198,6 +206,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     statemachine.addState(s_waitForChangePickup);
 
+    statemachine.addState(s_changeRefill);
+    statemachine.addState(s_adminPanel);
+    statemachine.addState(s_refillCoffeeType);
+
     statemachine.setInitialState(s_0);
 
 
@@ -215,7 +227,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(s_process5C, &QState::entered, this, &MainWindow::S_5C_inserted);
     connect(s_process10C, &QState::entered, this, &MainWindow::S_10C_inserted);
     connect(s_process20C, &QState::entered, this, &MainWindow::S_20C_inserted);
-    connect(s_process50C, &QState::entered, this,  &MainWindow::S_50C_inserted);
+    connect(s_process50C, &QState::entered, this, &MainWindow::S_50C_inserted);
     connect(s_process100C, &QState::entered, this, &MainWindow::S_100C_inserted);
 
     connect(s_dispensingCoffeeState, &QState::entered, this, &MainWindow::S_ProcessingCoffee);
@@ -241,6 +253,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(s_refillCappuchino, &QState::entered, this, [](){ qDebug() << "Entered s_refillCappuchino"; });
     connect(s_waitForRefill, &QState::entered, this, [](){ qDebug() << "Entered s_waitForRefill"; });
 
+    connect(s_changeRefill, &QState::entered, this, [](){ qDebug() << "Entered s_changeRefill"; });
+    connect(s_adminPanel, &QState::entered, this, &MainWindow::s_admininstartionPanel);
+    connect(s_refillCoffeeType, &QState::entered, this, &MainWindow::s_refillCoffeeType);
     
 
     statemachine.start();
@@ -311,6 +326,7 @@ void MainWindow::S_waitForOption_onEntry(void)
     } else {
         ui->pb3->setText("Coffee 150 cents");
     }
+    ui->pb6->setText("Administration");
     ui->userInfo->appendPlainText("Please choose your coffee");
 }
 
@@ -671,4 +687,106 @@ void MainWindow::updateCoffeeTypeUI()
     ui->cappuchinoCount->setPlainText(QString::number(coffeeType.getCappuchinoCount()));
     ui->espressoCount->setPlainText(QString::number(coffeeType.getEspressoCount()));
     ui->coffeeCount->setPlainText(QString::number(coffeeType.getCoffeeCount()));
+}
+
+void MainWindow::s_admininstartionPanel(void)
+{
+    ui->pb1->setText("coffee refill");
+    ui->pb2->setText("change refill");
+    ui->pb3->setText("back to main menu");
+}
+
+void MainWindow::s_refillCoffeeType(void)
+{
+    ui->pb1->setText("refill cappuchino");
+    ui->pb2->setText("refill espresso");
+    ui->pb3->setText("refill coffee");
+    ui->pb4->setText("back to administration panel");
+}
+void MainWindow::s_refillChange(void)
+{
+    ui->pb1->setText("refill 5 cents");
+    ui->pb2->setText("refill 10 cents");
+    ui->pb3->setText("refill 20 cents");
+    ui->pb4->setText("refill 50 cents");
+    ui->pb5->setText("refill 100 cents");
+    ui->pb6->setText("back to administration panel");
+}
+
+void MainWindow::s_refill100C(void)
+{
+    credit.addCoin100c(1); // Use coinhandler
+    updateChangeUI();
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Refilled 100 cents";
+    ui->plainTextEdit->appendPlainText(logstring);
+    emit internalEvent->refillComplete();
+    ui->userInfo->appendPlainText("Refilled 100 cents.");
+}
+
+void MainWindow::s_refill50C(void)
+{
+    credit.addCoin50c(1); // Use coinhandler
+    updateChangeUI();
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Refilled 50 cents";
+    emit internalEvent->refillComplete();
+    ui->plainTextEdit->appendPlainText(logstring);
+}
+
+void MainWindow::s_refill20C(void)
+{
+    credit.addCoin20c(1); // Use coinhandler
+    updateChangeUI();
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Refilled 20 cents";
+    emit internalEvent->refillComplete();
+    ui->plainTextEdit->appendPlainText(logstring);
+}
+
+void MainWindow::s_refill10C(void)
+{
+    credit.addCoin10c(1); // Use coinhandler
+    updateChangeUI();
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Refilled 10 cents";
+    emit internalEvent->refillComplete();
+    ui->plainTextEdit->appendPlainText(logstring);
+}
+
+void MainWindow::s_refill5C(void)
+{
+    credit.addCoin5c(1); // Use coinhandler
+    updateChangeUI();
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Refilled 5 cents";
+    emit internalEvent->refillComplete();
+    ui->plainTextEdit->appendPlainText(logstring);
+}
+void MainWindow::s_refillCoffee(void)
+{
+    coffeeType.addCoffee(1);
+    updateCoffeeTypeUI();
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Refilled Coffee";
+    emit internalEvent->refillComplete();
+    ui->plainTextEdit->appendPlainText(logstring);
+}
+void MainWindow::s_refillEspresso(void)
+{
+    coffeeType.addEspresso(1);
+    updateCoffeeTypeUI();
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Refilled Espresso";
+    emit internalEvent->refillComplete();
+    ui->plainTextEdit->appendPlainText(logstring);
+}
+void MainWindow::s_refillCappuchino(void)
+{
+    coffeeType.addCappuchino(1);
+    updateCoffeeTypeUI();
+    emit internalEvent->refillComplete();
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "Refilled Cappuchino";
+    ui->plainTextEdit->appendPlainText(logstring);
 }

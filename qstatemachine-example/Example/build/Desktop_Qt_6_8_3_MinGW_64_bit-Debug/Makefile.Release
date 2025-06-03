@@ -352,7 +352,7 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
-release/coffeeTypeHandler.o: ../../coffeeTypeHandler.cpp 
+release/coffeeTypeHandler.o: ../../coffeeTypeHandler.cpp ../../coffeeTypeHandler.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\coffeeTypeHandler.o ..\..\coffeeTypeHandler.cpp
 
 release/coinhandler.o: ../../coinhandler.cpp ../../coinhandler.h \
@@ -1098,6 +1098,7 @@ release/savingHandler.o: ../../savingHandler.cpp ../../savingHandler.h \
 		C:/Qt/6.8.3/mingw_64/include/QtCore/qstringconverter.h \
 		C:/Qt/6.8.3/mingw_64/include/QtCore/qstringconverter_base.h \
 		../../coinhandler.h \
+		../../coffeeTypeHandler.h \
 		C:/Qt/6.8.3/mingw_64/include/QtCore/QFile \
 		C:/Qt/6.8.3/mingw_64/include/QtCore/qfile.h \
 		C:/Qt/6.8.3/mingw_64/include/QtCore/qfiledevice.h \

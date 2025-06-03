@@ -32,6 +32,8 @@ signals:
     void NoChange();
     void changeOver();
     void NoCoffeeType();
+    void refillComplete();
+
 };
 
 
@@ -74,6 +76,17 @@ private slots:
     void updateChangeUI();
     void onShutdown();
     void updateCoffeeTypeUI();
+    void s_admininstartionPanel(void);
+    void s_refillCoffeeType(void);
+    void s_refillChange(void);
+    void s_refill100C(void);
+    void s_refill50C(void);
+    void s_refill20C(void);
+    void s_refill10C(void);
+    void s_refill5C(void);
+    void s_refillCoffee(void);
+    void s_refillEspresso(void);
+    void s_refillCappuchino(void);
 
 private:
     Ui::MainWindow *ui;

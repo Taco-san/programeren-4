@@ -34,6 +34,7 @@ public:
     QPushButton *pb3;
     QPushButton *pb4;
     QPushButton *pb5;
+    QPushButton *pb6;
     QLabel *label_2;
     QPlainTextEdit *userInfo;
     QLabel *label;
@@ -102,6 +103,11 @@ public:
         pb5->setObjectName("pb5");
 
         horizontalLayout->addWidget(pb5);
+
+        pb6 = new QPushButton(groupBox);
+        pb6->setObjectName("pb6");
+
+        horizontalLayout->addWidget(pb6);
 
         label_2 = new QLabel(centralwidget);
         label_2->setObjectName("label_2");
@@ -214,6 +220,7 @@ public:
         pb3->setText(QString());
         pb4->setText(QString());
         pb5->setText(QString());
+        pb6->setText(QString());
         label_2->setText(QCoreApplication::translate("MainWindow", "User info", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "State logger", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "Inserted money", nullptr));
