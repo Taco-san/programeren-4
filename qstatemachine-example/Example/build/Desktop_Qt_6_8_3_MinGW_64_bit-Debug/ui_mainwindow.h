@@ -38,7 +38,6 @@ public:
     QPlainTextEdit *userInfo;
     QLabel *label;
     QPlainTextEdit *plainTextEdit;
-    QPushButton *pbExit;
     QPlainTextEdit *price;
     QPlainTextEdit *credit;
     QPlainTextEdit *change;
@@ -56,6 +55,7 @@ public:
     QLabel *label_9;
     QLabel *label_10;
     QLabel *label_11;
+    QPushButton *pbShutdown;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -109,9 +109,6 @@ public:
         plainTextEdit = new QPlainTextEdit(centralwidget);
         plainTextEdit->setObjectName("plainTextEdit");
         plainTextEdit->setGeometry(QRect(9, 278, 591, 146));
-        pbExit = new QPushButton(centralwidget);
-        pbExit->setObjectName("pbExit");
-        pbExit->setGeometry(QRect(9, 430, 80, 24));
         price = new QPlainTextEdit(centralwidget);
         price->setObjectName("price");
         price->setGeometry(QRect(870, 210, 241, 61));
@@ -163,6 +160,9 @@ public:
         label_11 = new QLabel(centralwidget);
         label_11->setObjectName("label_11");
         label_11->setGeometry(QRect(920, 400, 41, 31));
+        pbShutdown = new QPushButton(centralwidget);
+        pbShutdown->setObjectName("pbShutdown");
+        pbShutdown->setGeometry(QRect(10, 430, 212, 24));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -173,7 +173,6 @@ public:
         MainWindow->setStatusBar(statusbar);
 
         retranslateUi(MainWindow);
-        QObject::connect(pbExit, &QPushButton::clicked, MainWindow, qOverload<>(&QMainWindow::close));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -189,7 +188,6 @@ public:
         pb5->setText(QString());
         label_2->setText(QCoreApplication::translate("MainWindow", "User info", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "State logger", nullptr));
-        pbExit->setText(QCoreApplication::translate("MainWindow", "E&xit", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "Inserted money", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "Current price of coffee", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "Change to be returned", nullptr));
@@ -204,6 +202,7 @@ public:
         label_9->setText(QCoreApplication::translate("MainWindow", "20c", nullptr));
         label_10->setText(QCoreApplication::translate("MainWindow", "50c", nullptr));
         label_11->setText(QCoreApplication::translate("MainWindow", "100c", nullptr));
+        pbShutdown->setText(QCoreApplication::translate("MainWindow", "Shutdown", nullptr));
     } // retranslateUi
 
 };

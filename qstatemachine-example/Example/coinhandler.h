@@ -6,14 +6,14 @@ class coinhandler
 public:
     coinhandler();
 
-    int getCredit();
+    int getCredit() const;
     void setCredit(int amount);
     void addCredit(int amount);
 
-    int getPrice();
+    int getPrice() const;
     void setPrice(int amount);
 
-    int getChange();
+    int getChange() const;
     void setChange(int amount);
     int addChange(int amount);
     int substractChange(int amount);
@@ -21,18 +21,23 @@ public:
     bool checkCredit(void);
 
     void setType(int amount);
-    int getType();
+    int getType() const;
 
     void addCoin5c(int amount);
     void addCoin10c(int amount);
     void addCoin20c(int amount);
     void addCoin50c(int amount);
     void addCoin100c(int amount);
-    int getCoin5cCount();
-    int getCoin10cCount();
-    int getCoin20cCount();
-    int getCoin50cCount();
-    int getCoin100cCount();
+    int getCoin5cCount() const;
+    int getCoin10cCount() const;
+    int getCoin20cCount() const;
+    int getCoin50cCount() const;
+    int getCoin100cCount() const;
+    void setCoin5cCount(int amount);
+    void setCoin10cCount(int amount);
+    void setCoin20cCount(int amount);
+    void setCoin50cCount(int amount);
+    void setCoin100cCount(int amount);
 
 private:
     int credit_;

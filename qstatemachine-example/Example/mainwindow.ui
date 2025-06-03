@@ -113,19 +113,6 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pbExit">
-    <property name="geometry">
-     <rect>
-      <x>9</x>
-      <y>430</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>E&amp;xit</string>
-    </property>
-   </widget>
    <widget class="QPlainTextEdit" name="price">
     <property name="geometry">
      <rect>
@@ -338,6 +325,19 @@
      <string>100c</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pbShutdown">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>430</y>
+      <width>212</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Shutdown</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -352,22 +352,5 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>pbExit</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>172</x>
-     <y>242</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>172</x>
-     <y>142</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

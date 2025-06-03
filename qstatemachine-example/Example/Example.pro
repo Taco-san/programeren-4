@@ -12,13 +12,17 @@ QT += statemachine
 
 
 SOURCES += \
+    coffeeTypeHandler.cpp \
     coinhandler.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    savingHandler.cpp
 
 HEADERS += \
+    coffeeTypeHandler.h \
     coinhandler.h \
-    mainwindow.h
+    mainwindow.h \
+    savingHandler.h
 
 FORMS += \
     mainwindow.ui

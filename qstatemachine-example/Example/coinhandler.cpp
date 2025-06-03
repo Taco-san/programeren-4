@@ -14,7 +14,7 @@ coinhandler::coinhandler()
     coin100c_ = 0;
 }
 
-int coinhandler::getCredit()
+int coinhandler::getCredit() const
 {
     return credit_;
 }
@@ -29,7 +29,7 @@ void coinhandler::addCredit(int amount)
     credit_ = credit_ + amount;
 }
 
-int coinhandler::getPrice()
+int coinhandler::getPrice() const
 {
     return price_;
 }
@@ -39,14 +39,14 @@ void coinhandler::setPrice(int amount)
     price_ = amount;
 }
 
-int coinhandler::getChange()
+int coinhandler::getChange() const
 {
 
-    change_ = credit_ - price_;
-    if (change_ < 0) {
-        change_ = 0; // Ensure change is not negative
+    int tempChange = credit_ - price_;
+    if (tempChange < 0) {
+        tempChange = 0; // Ensure change is not negative
     }
-    return change_;
+    return tempChange;
 }
 
 void coinhandler::setChange(int amount)
@@ -77,7 +77,7 @@ void coinhandler::setType(int amount)
     coffeetype_ = amount;
 }
 
-int coinhandler::getType()
+int coinhandler::getType() const
 {
     return coffeetype_;
 }
@@ -107,23 +107,48 @@ void coinhandler::addCoin100c(int amount)
     coin100c_ += amount;
 }
 
-int coinhandler::getCoin5cCount()
+int coinhandler::getCoin5cCount() const
 {
     return coin5c_;
 }
-int coinhandler::getCoin10cCount()
+int coinhandler::getCoin10cCount() const
 {
     return coin10c_;
 }
-int coinhandler::getCoin20cCount()
+int coinhandler::getCoin20cCount() const
 {
     return coin20c_;
 }
-int coinhandler::getCoin50cCount()
+int coinhandler::getCoin50cCount() const
 {
     return coin50c_;
 }
-int coinhandler::getCoin100cCount()
+int coinhandler::getCoin100cCount() const
 {
     return coin100c_;
+}
+
+void coinhandler::setCoin5cCount(int amount)
+{
+    coin5c_ = amount;
+}
+
+void coinhandler::setCoin10cCount(int amount)
+{
+    coin10c_ = amount;
+}
+
+void coinhandler::setCoin20cCount(int amount)
+{
+    coin20c_ = amount;
+}
+
+void coinhandler::setCoin50cCount(int amount)
+{
+    coin50c_ = amount;
+}
+
+void coinhandler::setCoin100cCount(int amount)
+{
+    coin100c_ = amount;
 }

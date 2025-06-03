@@ -119,6 +119,39 @@ MainWindow::MainWindow(QWidget *parent)
     s_dispense10C->addTransition(internalEvent, SIGNAL(NoChange()), s_waitForChangePickup);
     s_dispense5C->addTransition(internalEvent, SIGNAL(NoChange()), s_waitForChangePickup);
     s_waitForChangePickup->addTransition(ui->pb1, &QPushButton::clicked, s_waitForOption);
+    s_0->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_init->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_waitForOption->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_optionCappuchino->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_optionEspresso->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_optionCoffee->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_waitForCoins->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_process5C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_process10C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_process20C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_process50C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_process100C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_dispensingCoffeeState->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_dispensingCappuchino->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_dispensingEspresso->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_dispensingCoffee->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_dispensingChangeState->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_dispense100C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_dispense50C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_dispense20C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_dispense10C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_dispense5C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_refill100C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_refill50C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_refill20C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_refill10C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_refill5C->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_refillCoffee->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_refillEspresso->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_refillCappuchino->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_waitForRefill->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_waitForChangePickup->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+
 
 
     // Add all other states
@@ -168,7 +201,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Example: connect state entry/exit signals for all other states
     //connect(s_0, &QState::entered, this, &MainWindow::s1_entered );
     connect(s_init, &QState::entered, this,  &MainWindow::sinit_entered);
-    connect(s_shutdown, &QState::entered, this, [](){ qDebug() << "Entered s_shutdown"; });
+    connect(s_shutdown, &QState::entered, this, &MainWindow::onShutdown);
 
     connect(s_waitForOption, &QState::entered, this, &MainWindow::S_waitForOption_onEntry);
     connect(s_optionCappuchino, &QState::entered, this, &MainWindow::S_OptionCappuchino_onEntry);
@@ -237,6 +270,7 @@ void MainWindow::sinit_entered(void)
     ui->userInfo->appendPlainText("Coffee Machine initialised.");
     ui->pb1->setText("Choose coffee option");
     ui->pb2->setText("administration");
+    savingHandler::loadData(credit, coffeeType, "data.txt");
 
     updateChangeUI();
 
@@ -586,4 +620,12 @@ void MainWindow::updateChangeUI()
     ui->c20->setPlainText(QString::number(credit.getCoin20cCount()));
     ui->c50->setPlainText(QString::number(credit.getCoin50cCount()));
     ui->c100->setPlainText(QString::number(credit.getCoin100cCount()));
+}
+
+void MainWindow::onShutdown(){
+    savingHandler::saveData(credit, coffeeType, "data.txt");
+    qDebug() << "Saving data to file";
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    // ... any other shutdown logic ...
+    QApplication::quit();
 }

@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QStateMachine>
 #include "coinhandler.h"
+#include "coffeeTypeHandler.h"
+#include "savingHandler.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -41,6 +43,7 @@ public:
     ~MainWindow();
 
     coinhandler credit;
+    CoffeeTypeHandler coffeeType;
     CustomObject *internalEvent = new CustomObject;
 
 private slots:
@@ -68,6 +71,7 @@ private slots:
     void S_dispensing5c(void);
     void S_waitForChangePickup(void);
     void updateChangeUI();
+    void onShutdown();
 
 private:
     Ui::MainWindow *ui;
