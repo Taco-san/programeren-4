@@ -162,6 +162,25 @@ MainWindow::MainWindow(QWidget *parent)
     s_adminPanel->addTransition(ui->pb1, &QPushButton::clicked, s_refillCoffeeType);
     s_adminPanel->addTransition(ui->pb2, &QPushButton::clicked, s_changeRefill);
     s_adminPanel->addTransition(ui->pb3, &QPushButton::clicked, s_waitForOption);
+    s_refillCoffeeType->addTransition(ui->pb1, &QPushButton::clicked, s_refillCoffee);
+    s_refillCoffeeType->addTransition(ui->pb2, &QPushButton::clicked, s_refillEspresso);
+    s_refillCoffeeType->addTransition(ui->pb3, &QPushButton::clicked, s_refillCappuchino);
+    s_refillCoffeeType->addTransition(ui->pb4, &QPushButton::clicked, s_adminPanel);
+    s_changeRefill->addTransition(ui->pb1, &QPushButton::clicked, s_refill100C);
+    s_changeRefill->addTransition(ui->pb2, &QPushButton::clicked, s_refill50C);
+    s_changeRefill->addTransition(ui->pb3, &QPushButton::clicked, s_refill20C);
+    s_changeRefill->addTransition(ui->pb4, &QPushButton::clicked, s_refill10C);
+    s_changeRefill->addTransition(ui->pb5, &QPushButton::clicked, s_refill5C);
+    s_changeRefill->addTransition(ui->pb6, &QPushButton::clicked, s_adminPanel);
+    s_refill100C->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
+    s_refill50C->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
+    s_refill20C->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
+    s_refill10C->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
+    s_refill5C->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
+    s_refillCoffee->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
+    s_refillEspresso->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
+    s_refillCappuchino->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
+
 
 
 
@@ -243,17 +262,17 @@ MainWindow::MainWindow(QWidget *parent)
     connect(s_dispense5C, &QState::entered, this, &MainWindow::S_dispensing5c);
     connect(s_waitForChangePickup, &QState::entered, this, &MainWindow::S_waitForChangePickup);
 
-    connect(s_refill100C, &QState::entered, this, [](){ qDebug() << "Entered s_refill100C"; });
-    connect(s_refill50C, &QState::entered, this, [](){ qDebug() << "Entered s_refill50C"; });
-    connect(s_refill20C, &QState::entered, this, [](){ qDebug() << "Entered s_refill20C"; });
-    connect(s_refill10C, &QState::entered, this, [](){ qDebug() << "Entered s_refill10C"; });
-    connect(s_refill5C, &QState::entered, this, [](){ qDebug() << "Entered s_refill5C"; });
-    connect(s_refillCoffee, &QState::entered, this, [](){ qDebug() << "Entered s_refillCoffee"; });
-    connect(s_refillEspresso, &QState::entered, this, [](){ qDebug() << "Entered s_refillEspresso"; });
-    connect(s_refillCappuchino, &QState::entered, this, [](){ qDebug() << "Entered s_refillCappuchino"; });
+    connect(s_refill100C, &QState::entered, this, &MainWindow::s_refill100C);
+    connect(s_refill50C, &QState::entered, this, &MainWindow::s_refill50C);
+    connect(s_refill20C, &QState::entered, this, &MainWindow::s_refill20C);
+    connect(s_refill10C, &QState::entered, this, &MainWindow::s_refill10C);
+    connect(s_refill5C, &QState::entered, this, &MainWindow::s_refill5C);
+    connect(s_refillCoffee, &QState::entered, this, &MainWindow::s_refillCoffee);
+    connect(s_refillEspresso, &QState::entered, this, &MainWindow::s_refillEspresso);
+    connect(s_refillCappuchino, &QState::entered, this, &MainWindow::s_refillCappuchino);
     connect(s_waitForRefill, &QState::entered, this, [](){ qDebug() << "Entered s_waitForRefill"; });
 
-    connect(s_changeRefill, &QState::entered, this, [](){ qDebug() << "Entered s_changeRefill"; });
+    connect(s_changeRefill, &QState::entered, this, &MainWindow::s_refillChange);
     connect(s_adminPanel, &QState::entered, this, &MainWindow::s_admininstartionPanel);
     connect(s_refillCoffeeType, &QState::entered, this, &MainWindow::s_refillCoffeeType);
     
@@ -694,6 +713,9 @@ void MainWindow::s_admininstartionPanel(void)
     ui->pb1->setText("coffee refill");
     ui->pb2->setText("change refill");
     ui->pb3->setText("back to main menu");
+    ui->pb4->setText("");
+    ui->pb5->setText("");
+    ui->pb6->setText("");
 }
 
 void MainWindow::s_refillCoffeeType(void)

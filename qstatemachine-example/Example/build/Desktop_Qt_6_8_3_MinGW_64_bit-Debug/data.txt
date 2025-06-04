@@ -3,6 +3,6 @@ coin10c 0
 coin20c 0
 coin50c 0
 coin100c 4
-coffee_cappuchino 0
-coffee_espresso 0
-coffee_coffee 0
+coffee_cappuchino 1
+coffee_espresso 1
+coffee_coffee 1
