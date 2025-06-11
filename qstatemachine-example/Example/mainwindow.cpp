@@ -162,24 +162,24 @@ MainWindow::MainWindow(QWidget *parent)
     s_adminPanel->addTransition(ui->pb1, &QPushButton::clicked, s_refillCoffeeType);
     s_adminPanel->addTransition(ui->pb2, &QPushButton::clicked, s_changeRefill);
     s_adminPanel->addTransition(ui->pb3, &QPushButton::clicked, s_waitForOption);
-    s_refillCoffeeType->addTransition(ui->pb1, &QPushButton::clicked, s_refillCoffee);
+    s_refillCoffeeType->addTransition(ui->pb3, &QPushButton::clicked, s_refillCoffee);
     s_refillCoffeeType->addTransition(ui->pb2, &QPushButton::clicked, s_refillEspresso);
-    s_refillCoffeeType->addTransition(ui->pb3, &QPushButton::clicked, s_refillCappuchino);
+    s_refillCoffeeType->addTransition(ui->pb1, &QPushButton::clicked, s_refillCappuchino);
     s_refillCoffeeType->addTransition(ui->pb4, &QPushButton::clicked, s_adminPanel);
-    s_changeRefill->addTransition(ui->pb6, &QPushButton::clicked, s_refill100C);
-    s_changeRefill->addTransition(ui->pb5, &QPushButton::clicked, s_refill50C);
-    s_changeRefill->addTransition(ui->pb4, &QPushButton::clicked, s_refill20C);
-    s_changeRefill->addTransition(ui->pb3, &QPushButton::clicked, s_refill10C);
-    s_changeRefill->addTransition(ui->pb2, &QPushButton::clicked, s_refill5C);
-    s_changeRefill->addTransition(ui->pb1, &QPushButton::clicked, s_adminPanel);
+    s_changeRefill->addTransition(ui->pb5, &QPushButton::clicked, s_refill100C);
+    s_changeRefill->addTransition(ui->pb4, &QPushButton::clicked, s_refill50C);
+    s_changeRefill->addTransition(ui->pb3, &QPushButton::clicked, s_refill20C);
+    s_changeRefill->addTransition(ui->pb2, &QPushButton::clicked, s_refill10C);
+    s_changeRefill->addTransition(ui->pb1, &QPushButton::clicked, s_refill5C);
+    s_changeRefill->addTransition(ui->pb6, &QPushButton::clicked, s_adminPanel);
     s_refill100C->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
     s_refill50C->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
     s_refill20C->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
     s_refill10C->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
     s_refill5C->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
-    s_refillCoffee->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
-    s_refillEspresso->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
-    s_refillCappuchino->addTransition(internalEvent, SIGNAL(refillComplete()), s_changeRefill);
+    s_refillCoffee->addTransition(internalEvent, SIGNAL(refillComplete()), s_refillCoffeeType);
+    s_refillEspresso->addTransition(internalEvent, SIGNAL(refillComplete()), s_refillCoffeeType);
+    s_refillCappuchino->addTransition(internalEvent, SIGNAL(refillComplete()), s_refillCoffeeType);
 
 
 
