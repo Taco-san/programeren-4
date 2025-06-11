@@ -42,7 +42,7 @@ void coinhandler::setPrice(int amount)
 int coinhandler::getChange() const
 {
 
-    int tempChange = credit_ - price_;
+    int tempChange = change_;
     if (tempChange < 0) {
         tempChange = 0; // Ensure change is not negative
     }
