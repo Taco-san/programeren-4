@@ -6,23 +6,6 @@
 #include <QDateTime>
 #include <QDebug>
 
-
-//          *                                 +---------+
-//          |                                 |         |
-//          v                                 v         | button 2
-//     +--------+                         +--------+    | clicked
-//     |   S1   |                         |   S2   |----+
-//     +--------+    button 2 clicked     +--------+
-//     |        |------------------------>|        |
-//     +--------+                         +--------+
-//          ^                                  |
-//          | button 1                         | button 3
-//          | clicked   +--------+             | clicked
-//          |           |   S3   |             |
-//          |           +--------+             |
-//          +-----------|        |<------------+
-//                      +--------+
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
