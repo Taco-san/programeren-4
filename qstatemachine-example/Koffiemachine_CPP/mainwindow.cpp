@@ -527,6 +527,7 @@ void MainWindow::S_ProcessingCoffee(void)
 
 void MainWindow::S_dispensedCappuchino(void)
 {
+    coffeeType.setCappuchinoCount(coffeeType.getCappuchinoCount() - 1);
     ui->pb1->setText("take your Cappuchino");
     ui->pb2->setText("");
     ui->pb3->setText("");
@@ -536,6 +537,7 @@ void MainWindow::S_dispensedCappuchino(void)
 }
 void MainWindow::S_dispensedEspresso(void)
 {
+    coffeeType.setEspressoCount(coffeeType.getEspressoCount() - 1);
     ui->pb1->setText("take your Espresso");
     ui->pb2->setText("");
     ui->pb3->setText("");
@@ -545,6 +547,7 @@ void MainWindow::S_dispensedEspresso(void)
 }
 void MainWindow::S_dispensedCoffee(void)
 {
+    coffeeType.setCoffeeCount(coffeeType.getCoffeeCount() - 1);
     ui->pb1->setText("take your Coffee");
     ui->pb2->setText("");
     ui->pb3->setText("");

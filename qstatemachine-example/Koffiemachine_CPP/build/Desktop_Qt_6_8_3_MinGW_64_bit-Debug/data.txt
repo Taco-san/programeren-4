@@ -1,0 +1,8 @@
+coin5c 11
+coin10c 6
+coin20c 7
+coin50c 20
+coin100c 32
+coffee_cappuchino 5
+coffee_espresso 3
+coffee_coffee 1
