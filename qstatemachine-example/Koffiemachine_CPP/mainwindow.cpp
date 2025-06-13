@@ -154,6 +154,9 @@ MainWindow::MainWindow(QWidget *parent)
     s_refillCappuchino->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
     s_waitForRefill->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
     s_waitForChangePickup->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_adminPanel->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_refillCoffeeType->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
+    s_changeRefill->addTransition(ui->pbShutdown, &QPushButton::clicked, s_shutdown);
     s_optionCoffee->addTransition(internalEvent, SIGNAL(NoCoffeeType()), s_waitForOption);
     s_optionCappuchino->addTransition(internalEvent, SIGNAL(NoCoffeeType()), s_waitForOption);
     s_optionEspresso->addTransition(internalEvent, SIGNAL(NoCoffeeType()), s_waitForOption);
@@ -289,13 +292,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// init function for the state machine initialises all variables and sets the initial state
 void MainWindow::sinit_entered(void)
 {
     QString logstring;
 
 
     logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-    logstring += "Initialisation succesfull";
+    logstring += "entered sinit_entered";
     ui->plainTextEdit->appendPlainText(logstring);
 
     credit.setCredit(0);
@@ -314,6 +318,7 @@ void MainWindow::sinit_entered(void)
 
 }
 
+// wait for option state is entered when the user has selected a coffee option
 void MainWindow::S_waitForOption_onEntry(void)
 {
     QString logstring;
@@ -349,9 +354,15 @@ void MainWindow::S_waitForOption_onEntry(void)
     ui->userInfo->appendPlainText("Please choose your coffee");
 }
 
+
+// This function is called when the user selects Cappuchino
+// It checks if Cappuchino is available and sets the price and type accordingly
 void MainWindow::S_OptionCappuchino_onEntry(void)
 {
-    
+    QString logstring;
+    logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "entered S_OptionCappuchino_onEntry";
+    ui->plainTextEdit->appendPlainText(logstring);
     if (coffeeType.getCappuchinoCount() == 0) {
         ui->userInfo->appendPlainText("No Cappuchino available. Please choose another option.");
         emit internalEvent->NoCoffeeType();
@@ -367,6 +378,8 @@ void MainWindow::S_OptionCappuchino_onEntry(void)
     }
 }
 
+// This function is called when the user selects Espresso
+// It checks if Espresso is available and sets the price and type accordingly
 void MainWindow::S_OptionEspresso_onEntry(void)
 {
     QString logstring;
@@ -388,6 +401,8 @@ void MainWindow::S_OptionEspresso_onEntry(void)
     }
 }
 
+// This function is called when the user selects Coffee
+// It checks if Coffee is available and sets the price and type accordingly
 void MainWindow::S_OptionCoffee_onEntry(void)
 {
     QString logstring;
@@ -400,7 +415,6 @@ void MainWindow::S_OptionCoffee_onEntry(void)
     }
     else
     {
-            QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     credit.setPrice(150);
     credit.setType(3); // Set coffee type to Coffee
     ui->userInfo->appendPlainText("Coffee selected. Price is 150 cents.");
@@ -411,13 +425,12 @@ void MainWindow::S_OptionCoffee_onEntry(void)
     }
 }
 
+// waiting for coins state updates the UI to prompt the user to insert coins
 void MainWindow::S_waitingForCoins()
 {
     QString logstring;
     logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     logstring += "entered S_waitingForCoins";
-    ui->plainTextEdit->appendPlainText(logstring);
-    logstring += "Waiting for coins to be inserted";
     ui->plainTextEdit->appendPlainText(logstring);
     ui->userInfo->appendPlainText("Please insert coins to pay for your coffee.");
     ui->pb1->setText("Insert 5 cents");
@@ -427,59 +440,66 @@ void MainWindow::S_waitingForCoins()
     ui->pb5->setText("Insert 100 cents");
 }
 
+// This function is called when the user inserts 5 cents and updates the credit and cointype accordingly
 void MainWindow::S_5C_inserted()
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-    logstring += "5 cents inserted";
+    logstring += "entered S_5C_inserted";
     credit.addCoin5c(1);
     updateChangeUI();
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(5);
 }
 
+// This function is called when the user inserts 10 cents and updates the credit and cointype accordingly
 void MainWindow::S_10C_inserted()
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-    logstring += "10 cents inserted";
+    logstring += "entered S_10C_inserted";
     credit.addCoin10c(1);
     updateChangeUI();
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(10);
 }
 
+// This function is called when the user inserts 20 cents and updates the credit and cointype accordingly
 void MainWindow::S_20C_inserted()
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-    logstring += "20 cents inserted";
+    logstring += "entered S_20C_inserted";
     credit.addCoin20c(1);
     updateChangeUI();
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(20);
 }
 
+// This function is called when the user inserts 50 cents and updates the credit and cointype accordingly
 void MainWindow::S_50C_inserted()
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-    logstring += "50 cents inserted";
+    logstring += "entered S_50C_inserted";
     credit.addCoin50c(1);
     updateChangeUI();
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(50);
 }
 
+// This function is called when the user inserts 100 cents and updates the credit and cointype accordingly
 void MainWindow::S_100C_inserted()
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-    logstring += "100 cents inserted";
+    logstring += "entered S_100C_inserted";
     credit.addCoin100c(1);
     updateChangeUI();
     ui->plainTextEdit->appendPlainText(logstring);
     ProcessMoney(100);
 }
+
+// This function processes the money inserted by the user and performs the necessary checks
 void MainWindow::ProcessMoney(int money)
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-    logstring += "Processing money: " + QString::number(money) + " cents";
+    logstring += "entere processmoney logic";
     ui->plainTextEdit->appendPlainText(logstring);
 
     credit.setCredit(credit.getCredit() + money);
@@ -497,36 +517,40 @@ void MainWindow::ProcessMoney(int money)
     }
 }
 
+// this function performs the logic of which coffee to dispense based on the user's selection
 void MainWindow::S_ProcessingCoffee(void)
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
     credit.setChange(credit.getCredit() - credit.getPrice());
+    logstring += "entered S_ProcessingCoffee";
+    ui->plainTextEdit->appendPlainText(logstring);
     switch(credit.getType()) {
         case 1: // Cappuchino
             logstring += "Dispensing Cappuchino";
             statemachine.postEvent(new QEvent(QEvent::User));
             emit internalEvent->dispenseCappuchino();
-            ui->plainTextEdit->appendPlainText(logstring);
             break;
         case 2: // Espresso
             logstring += "Dispensing Espresso";
             statemachine.postEvent(new QEvent(QEvent::User));
             emit internalEvent->dispenseEspresso();
-            ui->plainTextEdit->appendPlainText(logstring);
             break;
         case 3: // Coffee
             logstring += "Dispensing Coffee";
             statemachine.postEvent(new QEvent(QEvent::User));
             emit internalEvent->dispenseCoffee();
-            ui->plainTextEdit->appendPlainText(logstring);
             break;
         default:
-            ui->userInfo->appendPlainText("Unknown coffee type selected.");
+            ui->userInfo->appendPlainText("Unknown coffee type selected. ERROR!");
     }
 }
 
+// this function prompts the user to take their cappuchino and updates the coffee type count
 void MainWindow::S_dispensedCappuchino(void)
 {
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "entered S_dispensedCappuchino";
+    ui->plainTextEdit->appendPlainText(logstring);
     coffeeType.setCappuchinoCount(coffeeType.getCappuchinoCount() - 1);
     ui->pb1->setText("take your Cappuchino");
     ui->pb2->setText("");
@@ -535,8 +559,13 @@ void MainWindow::S_dispensedCappuchino(void)
     ui->pb5->setText("");
     updateCoffeeTypeUI();
 }
+
+// this function prompts the user to take their espresso and updates the coffee type count
 void MainWindow::S_dispensedEspresso(void)
 {
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "entered S_dispensedEspresso";
+    ui->plainTextEdit->appendPlainText(logstring);
     coffeeType.setEspressoCount(coffeeType.getEspressoCount() - 1);
     ui->pb1->setText("take your Espresso");
     ui->pb2->setText("");
@@ -545,8 +574,13 @@ void MainWindow::S_dispensedEspresso(void)
     ui->pb5->setText("");
     updateCoffeeTypeUI();
 }
+
+// this function prompts the user to take their coffee and updates the coffee type count
 void MainWindow::S_dispensedCoffee(void)
 {
+    QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
+    logstring += "entered S_dispensedCoffee";
+    ui->plainTextEdit->appendPlainText(logstring);
     coffeeType.setCoffeeCount(coffeeType.getCoffeeCount() - 1);
     ui->pb1->setText("take your Coffee");
     ui->pb2->setText("");
@@ -556,10 +590,12 @@ void MainWindow::S_dispensedCoffee(void)
     updateCoffeeTypeUI();
 }
 
+
+// this function performs the logic for dispensing change to the user which includes going from highest to lowest denomination
 void MainWindow::s_dispensingChange(void)
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
-    logstring += "Dispensing change state";
+    logstring += "entered s_dispensingChange";
     ui->plainTextEdit->setPlainText(logstring);
 
     ui->change->setPlainText(QString::number(credit.getChange()));
@@ -597,6 +633,8 @@ void MainWindow::s_dispensingChange(void)
     }
 }
 
+
+// This function dispenses 100 cents to the user and updates the change and coin count accordingly
 void MainWindow::S_dispensing100c(void)
 {
     QString logstring;
@@ -619,6 +657,7 @@ void MainWindow::S_dispensing100c(void)
     }   
 }
 
+// This function dispenses 50 cents to the user and updates the change and coin count accordingly
 void MainWindow::S_dispensing50c(void)
 {
         QString logstring;
@@ -640,6 +679,7 @@ void MainWindow::S_dispensing50c(void)
     }
 }
 
+// This function dispenses 20 cents to the user and updates the change and coin count accordingly
 void MainWindow::S_dispensing20c(void)
 {
     QString logstring;
@@ -661,6 +701,7 @@ void MainWindow::S_dispensing20c(void)
     }
 }
 
+// This function dispenses 10 cents to the user and updates the change and coin count accordingly
 void MainWindow::S_dispensing10c(void)
 {
     QString logstring;
@@ -682,6 +723,7 @@ void MainWindow::S_dispensing10c(void)
     }
 }
 
+// This function dispenses 5 cents to the user and updates the change and coin count accordingly
 void MainWindow::S_dispensing5c(void)
 {
     QString logstring;
@@ -703,6 +745,8 @@ void MainWindow::S_dispensing5c(void)
     }
 }
 
+
+// This function waits for the user to pick up their change after dispensing
 void MainWindow::S_waitForChangePickup(void)
 {
     QString logstring = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ");
@@ -718,6 +762,7 @@ void MainWindow::S_waitForChangePickup(void)
     ui->change->setPlainText(QString::number(credit.getChange()));
 }
 
+// This function updates the UI to show the current change counts
 void MainWindow::updateChangeUI()
 {
     ui->c5->setPlainText(QString::number(credit.getCoin5cCount()));
@@ -727,6 +772,7 @@ void MainWindow::updateChangeUI()
     ui->c100->setPlainText(QString::number(credit.getCoin100cCount()));
 }
 
+// This function performs the shutdown logic when the application is closed such as saving the data to a file
 void MainWindow::onShutdown(){
     savingHandler::saveData(credit, coffeeType, "data.txt");
     qDebug() << "Saving data to file";
@@ -735,6 +781,7 @@ void MainWindow::onShutdown(){
     QApplication::quit();
 }
 
+// This function updates the UI to show the current coffee type counts
 void MainWindow::updateCoffeeTypeUI()
 {
     ui->cappuchinoCount->setPlainText(QString::number(coffeeType.getCappuchinoCount()));
@@ -742,6 +789,8 @@ void MainWindow::updateCoffeeTypeUI()
     ui->coffeeCount->setPlainText(QString::number(coffeeType.getCoffeeCount()));
 }
 
+
+// This function sets the UI for the administration panel where the user can refill coffee and change
 void MainWindow::s_admininstartionPanel(void)
 {
     ui->pb1->setText("coffee refill");
@@ -752,6 +801,7 @@ void MainWindow::s_admininstartionPanel(void)
     ui->pb6->setText("");
 }
 
+// This function sets the UI for the refill change state where the user can refill different coffee types
 void MainWindow::s_refillCoffeeType(void)
 {
     ui->pb1->setText("refill cappuchino");
@@ -759,6 +809,8 @@ void MainWindow::s_refillCoffeeType(void)
     ui->pb3->setText("refill coffee");
     ui->pb4->setText("back to administration panel");
 }
+
+// This function sets the UI for the refill change state where the user can refill different change denominations
 void MainWindow::s_refillChange(void)
 {
     ui->pb1->setText("refill 5 cents");
@@ -769,6 +821,7 @@ void MainWindow::s_refillChange(void)
     ui->pb6->setText("back to administration panel");
 }
 
+// this function refills 100 cents in the change handler and updates the UI accordingly
 void MainWindow::s_refill100C(void)
 {
     credit.addCoin100c(1); // Use coinhandler
@@ -780,6 +833,7 @@ void MainWindow::s_refill100C(void)
     ui->userInfo->appendPlainText("Refilled 100 cents.");
 }
 
+// this function refills 50 cents in the change handler and updates the UI accordingly
 void MainWindow::s_refill50C(void)
 {
     credit.addCoin50c(1); // Use coinhandler
@@ -790,6 +844,7 @@ void MainWindow::s_refill50C(void)
     ui->plainTextEdit->appendPlainText(logstring);
 }
 
+// this function refills 20 cents in the change handler and updates the UI accordingly
 void MainWindow::s_refill20C(void)
 {
     credit.addCoin20c(1); // Use coinhandler
@@ -800,6 +855,7 @@ void MainWindow::s_refill20C(void)
     ui->plainTextEdit->appendPlainText(logstring);
 }
 
+// this function refills 10 cents in the change handler and updates the UI accordingly
 void MainWindow::s_refill10C(void)
 {
     credit.addCoin10c(1); // Use coinhandler
@@ -810,6 +866,7 @@ void MainWindow::s_refill10C(void)
     ui->plainTextEdit->appendPlainText(logstring);
 }
 
+// this function refills 5 cents in the change handler and updates the UI accordingly
 void MainWindow::s_refill5C(void)
 {
     credit.addCoin5c(1); // Use coinhandler
@@ -819,6 +876,8 @@ void MainWindow::s_refill5C(void)
     emit internalEvent->refillComplete();
     ui->plainTextEdit->appendPlainText(logstring);
 }
+
+// This function refills the coffee type based on the user's selection and updates the UI accordingly
 void MainWindow::s_refillCoffee(void)
 {
     coffeeType.addCoffee(1);
@@ -828,6 +887,8 @@ void MainWindow::s_refillCoffee(void)
     emit internalEvent->refillComplete();
     ui->plainTextEdit->appendPlainText(logstring);
 }
+
+// This function refills the espresso type based on the user's selection and updates the UI accordingly
 void MainWindow::s_refillEspresso(void)
 {
     coffeeType.addEspresso(1);
@@ -837,6 +898,8 @@ void MainWindow::s_refillEspresso(void)
     emit internalEvent->refillComplete();
     ui->plainTextEdit->appendPlainText(logstring);
 }
+
+// This function refills the cappuchino type based on the user's selection and updates the UI accordingly
 void MainWindow::s_refillCappuchino(void)
 {
     coffeeType.addCappuchino(1);
